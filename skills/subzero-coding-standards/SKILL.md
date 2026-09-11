@@ -122,6 +122,25 @@ If any condition fails, the implementation is not SubZero-compliant.
 
 Everything below is a refinement of this one rule for specific cases.
 
+## Component API verification
+
+Before using a SubZero component, verify its installed type declaration or an
+existing local usage. Do not infer behavior from the component name. Record
+the verified component and props in the evidence record required by Gate 4.
+
+Use the verified API to resolve ambiguous patterns:
+
+- Binary visual switch: verify whether the package provides `DsToggle` or
+  `DsSwitch` for the intended interaction.
+- Images: verify that `DsImage` uses `srcSet` and provide entries in the
+  package's expected shape, such as `srcSet={[{ src, alt }]}`.
+- Tabs: prefer the `DsTabs` + `DsTab` composition when supported by the
+  installed API.
+- Icons: use semantic `color` props where the component exposes them.
+
+If the declaration and local usage disagree, follow the installed declaration
+for the target package version and flag the conflict for review.
+
 ---
 
 ## 1. HTML → Design System component mapping
@@ -147,7 +166,7 @@ Never emit raw HTML elements in JSX. Always check this table first.
 | Tooltip / `title` attribute                                               | `DsTooltip`                                                                                                     |                                                                                                                                                                                                  |
 | Collapsible section / `<details>`                                         | `DsAccordion`                                                                                                   |                                                                                                                                                                                                  |
 | Slider, modal, autocomplete, date picker, file uploader, pagination, tabs | `DsSlider`, `DsModal`, `DsDialog`, `DsAutocomplete`, `DsDatePicker`, `DsFileUploader`, `DsPagination`, `DsTabs` | Never hand-build these. If no DS component exists, stop and ask before writing 50+ lines of custom positioning logic.                                                                            |
-| `<img>` / images                                                          | `DsImage`                                                                                                       | DS image component — use instead of raw `<img>`. Props: `src`, `alt`, `width`, `height`.                                                                                                         |
+| `<img>` / images                                                          | `DsImage`                                                                                                       | DS image component — use instead of raw `<img>`. Verify the installed API; this package uses `srcSet={[{ src, alt }]}`.                                                                                                                                    |
 | `<hr>` / divider line                                                     | `DsDivider`                                                                                                     |                                                                                                                                                                                                  |
 | `<a>` / hyperlink                                                         | `DsLink`                                                                                                        |                                                                                                                                                                                                  |
 | Loading spinner / full-page loader                                        | `DsLoader`                                                                                                      | Drop-in loading state. Do not build a custom spinner.                                                                                                                                            |

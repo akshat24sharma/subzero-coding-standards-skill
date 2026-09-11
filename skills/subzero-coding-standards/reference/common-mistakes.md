@@ -6,6 +6,11 @@ checklist — these are the patterns that get guessed wrong most often.
 
 | # | Mistake | Why it happens | Correct approach |
 |---|---|---|---|
+| 0 | Choosing a component based on its name | Names do not guarantee visual behavior or prop contracts | Verify the installed type declaration or an existing local usage before selecting the component. |
+| 0a | Using `DsImage` with `src` | This package's image API requires a source-set prop | Use `srcSet={[{ src, alt }]}` after verifying the installed declaration. |
+| 0b | Using `DsSwitch` for a binary slider | `DsSwitch` renders a YES/NO control | Verify the installed API and use `DsToggle` for the binary slider pattern when supported. |
+| 0c | Using `sx` color on `DsRemixIcon` | Semantic icon classes can override the style override | Use the component's semantic `color` prop, such as `color="iconActionPrimary"` or `color="iconNegative"`, when available. |
+| 0d | Building tabs without checking the composite API | The package may expose a paired tabs composition | Prefer `DsTabs` + `DsTab` after verifying the installed declarations. |
 | 1 | Inventing a radius token name like `--ds-radius-circular` or `--ds-radius-pill` | The name sounds right for the visual shape | 10 radius tokens exist total: `zero`, `deepFreeze`, `quickFreeze`, `gelid`, `glacial`, `frostbite`, `bitterCold`, `cool`, `mild`, `pleasant` (max 28px). Full list in `token-reference.md`. For circles/pills beyond that, use a raw value with a comment. |
 | 2 | Treating `plasma`, `hot`, `warm` as radius tokens | These names exist as *spacing* tokens and get confused with radius | Always check which token category a name belongs to — spacing and radius namespaces don't share names by convention but can be visually confused. |
 | 3 | Hardcoding a hex color instead of a token | Hex is what the design tool (Figma) exports directly | Map every color to the nearest matching `--ds-colour-*` token; only fall back to a raw value with `/* awaiting token */` if genuinely no token matches. |

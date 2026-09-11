@@ -10,6 +10,19 @@ rules don't need one.
 These checks are blocking. Do not mark a Figma-derived implementation final if
 any answer is negative or unknown.
 
+### 0.0 Component API was verified
+
+- Each SubZero component was checked against its installed type declaration or
+  an existing local usage before implementation.
+- Component behavior was not inferred from the component name.
+- Binary visual switches use the verified `DsToggle` or `DsSwitch` API that
+  matches the intended interaction.
+- `DsImage` uses the verified source-set contract, such as
+  `srcSet={[{ src, alt }]}`, when required by the installed package.
+- Tabs use the verified `DsTabs` + `DsTab` composition when supported.
+- Icons use semantic `color` props where the installed component exposes them;
+  icon color was not forced through `sx` when that would be overridden.
+
 ### 0.1 Code Connect was honored
 
 - If Code Connect provided a component, the implementation uses that exact DS
@@ -40,6 +53,7 @@ any answer is negative or unknown.
 The implementation notes or working response identify:
 
 ```text
+Component API evidence:
 Code Connect component:
 Preserved props:
 Verified additions:
