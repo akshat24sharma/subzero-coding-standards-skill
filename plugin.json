@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "subzero-coding-standards",
+  "description": "SubZero (@am92/react-design-system) coding standards skill: enforces design-token usage, sx prop rules, and the 5-file Redux API pattern for compliant React/TypeScript code.",
+  "version": "0.1.0",
+  "author": {
+    "name": "SubZero Team",
+    "url": "https://github.com/akshat24sharma/subzero-coding-standards-skill"
+  },
+  "repository": "https://github.com/akshat24sharma/subzero-coding-standards-skill",
+  "license": "UNLICENSED",
+  "keywords": [
+    "subzero",
+    "react",
+    "typescript",
+    "design-system",
+    "am92",
+    "coding-standards",
+    "redux"
+  ]
+}
