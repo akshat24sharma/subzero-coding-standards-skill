@@ -1,23 +1,109 @@
 # subzero-coding-standards
 
-Agent Plugins 1.0 package for the `subzero-coding-standards` skill: teaches
-coding agents to write React/TypeScript code that is 100% compliant with
-`@am92/react-design-system` ("SubZero" / "DS") — design tokens, `sx` prop
-rules, HTML-to-DS component mapping, and the 5-file Redux API pattern.
+Agent Plugins 1.0 package for SubZero (`@am92/react-design-system`) standards.
+One plugin install, three skills:
+
+| Skill | Who | Slash command |
+| ----- | --- | ------------- |
+| Shared DS language (tokens, component inventory) | Everyone | `/subzero-principles` |
+| React/TypeScript coding (`sx`, HTML→`Ds*`, Redux 5-file API) | Developers | `/subzero-coding-standards` |
+| SubZero Figma screens from a prompt or existing PRD | Designers and PMs | `/subzero-design-standards` |
+
+Role skills load `subzero-principles` first so tokens and component names stay
+aligned. There is no separate product-manager skill: a PM who wants a demo
+from a PRD uses `/subzero-design-standards`. This plugin does not write PRDs.
 
 ## Prerequisites
 
-- A target project with `@am92/react-design-system` installed.
-- VS Code with `chat.plugins.enabled` set to `true` (default).
+- **Coding skill:** a target project with `@am92/react-design-system` installed.
+- **Design skill:** a Figma file with the SubZero V.2.0 library (MCP optional).
+  PMs use this same skill with an existing PRD to get a demo — they do not
+  need a separate skill.
+- VS Code / Cursor with plugins enabled (`chat.plugins.enabled` is `true` by default).
 
-This is a skills-only plugin: it does not bundle MCP servers, hooks, custom
-agents, or slash commands.
+Skills stay the source of truth. A thin MCP server in `mcp-server/` exposes
+the same files to any MCP client (Cursor, Claude Desktop, Copilot, custom
+agents) without copying the markdown.
+
+## Usage after install
+
+Install the plugin once. Then invoke the role you need:
+
+```text
+/subzero-coding-standards Build this screen with DS components
+/subzero-design-standards Create this screen in Figma from the PRD, SubZero only
+```
+
+The agent should also auto-pick from the prompt (React/JSX → coding, Figma/PRD
+demo → design) because each skill `description` lists WHAT, WHEN, and trigger
+phrases. Slash commands are optional. In Cursor, skills stay on **Agent
+Decides** (do not set them to Manual-only) so auto-invocation works.
+
+## MCP (any client)
+
+Same standards, served over MCP stdio. No `npm install`. Requires Node.js.
+Stdout is one JSON-RPC object per line (what Cursor expects). To use
+LSP `Content-Length` framing instead, set `MCP_STDIO_FRAMING=lsp`.
+
+| Tool | Purpose |
+| ---- | ------- |
+| `list_skills` | Catalog + descriptions + reference file names |
+| `load_skill` | One `SKILL.md` (`include_references` optional) |
+| `load_reference` | One `reference/*.md` file |
+| `load_skill_bundle` | Skill + every reference in one call |
+
+Resources: `subzero://skills`, `subzero://skill/<name>`,
+`subzero://skill/<name>/reference/<file>.md`.
+
+Prompts: `apply-subzero-principles`, `apply-subzero-coding-standards`,
+`apply-subzero-design-standards`.
+
+Print a ready-to-paste config with absolute paths:
+
+```sh
+node mcp-server/index.mjs --print-config
+```
+
+**Cursor / Claude Desktop / any stdio MCP host** — merge that JSON into:
+
+- Cursor user: `~/.cursor/mcp.json` under `mcpServers`
+- Cursor project: `.cursor/mcp.json` (already in this repo)
+- Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+Example:
+
+```json
+{
+  "mcpServers": {
+    "subzero-standards": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/subzero-coding-standards-skill/mcp-server/index.mjs"
+      ]
+    }
+  }
+}
+```
+
+Reload the client. On a SubZero React or Figma task the agent should call
+`list_skills` then `load_skill_bundle`.
+
+This repo also ships Agent Plugins `mcp.json`, so plugin-aware clients can
+start the same server from the package.
 
 ## Structure
 
 ```
 plugin.json
+mcp.json
+mcp-server/
+  index.mjs
 skills/
+  subzero-principles/
+    SKILL.md
+    reference/
+      tokens.md
+      components.md
   subzero-coding-standards/
     SKILL.md
     reference/
@@ -25,6 +111,13 @@ skills/
       common-mistakes.md
       validation-checklist.md
       api-integration-pattern.md
+  subzero-design-standards/
+    SKILL.md
+    reference/
+      figma-tokens.md
+      discovery-protocol.md
+      screen-composition.md
+      figma-gotchas.md
 scripts/
   validate-plugin.mjs
 ```
@@ -41,8 +134,14 @@ your VS Code user settings:
 }
 ```
 
-Reload the window, then check **Chat: Configure Skills** to confirm
-`subzero-coding-standards` is listed and enabled.
+In Cursor, you can also copy the repo into `~/.cursor/plugins/local/` and
+reload the window.
+
+Reload, then confirm these skills are listed and enabled:
+
+- `subzero-principles`
+- `subzero-coding-standards`
+- `subzero-design-standards`
 
 ## Installing from a Git source
 
@@ -67,6 +166,9 @@ repository), then register the marketplace in team settings:
 
 Team members can then discover and install it via
 **Extensions → @agentPlugins**.
+
+Cursor team marketplaces can import the same Git repo from Dashboard →
+Plugins. One install still exposes all three skills.
 
 ## Releasing an update
 
@@ -94,16 +196,15 @@ It checks that:
   valid lowercase kebab-case `name` and a `version`.
 - Each folder under `skills/` matches the plain kebab-case `name` field in
   its `SKILL.md` YAML frontmatter.
-- All required `reference/` files for `subzero-coding-standards` are
-  present.
+- Required `reference/` files for every skill are present.
+- If `mcp.json` exists, it is valid and `mcp-server/index.mjs` is present.
 
 ## Troubleshooting: skill does not appear
 
 - Confirm `chat.plugins.enabled` is `true`.
 - Run `node scripts/validate-plugin.mjs` and fix any reported errors.
-- Confirm `skills/subzero-coding-standards/SKILL.md`'s frontmatter `name`
-  field is exactly `subzero-coding-standards` (plain kebab-case, no
-  namespace prefix) and matches the folder name.
+- Confirm each `skills/<name>/SKILL.md` frontmatter `name` is plain kebab-case
+  and matches the folder name (no namespace prefix).
 - Confirm `plugin.json` is at the repository root and its `$schema` is
   exactly `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json`.
 - If installed from source and stuck, remove the cached clone and reinstall:

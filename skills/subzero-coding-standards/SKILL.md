@@ -1,14 +1,14 @@
 ---
 name: subzero-coding-standards
 description: >-
-  Use whenever writing, editing, or reviewing React/TypeScript code in a project
-  that depends on @am92/react-design-system (SubZero). Covers HTML-to-DS component
-  mapping, the SubZero design token system (spacing, color, radius, elevation,
-  typography), sx prop rules, the 5-file Redux API pattern, and the most common
-  violations that produce non-compliant code. Trigger this skill any time you are
-  about to write JSX in a SubZero project, implement a Figma design, use Code
-  Connect, style a component with the sx prop, add a border-radius/shadow/spacing
-  value, or wire up an API call in Redux.
+  Writes, edits, and reviews React/TypeScript UI that is 100% compliant with
+  @am92/react-design-system (SubZero). Use when implementing a screen in code,
+  generating or fixing JSX/TSX, mapping HTML or Figma to Ds* components,
+  styling with the sx prop, choosing --ds-spacing/--ds-colour/--ds-radius
+  tokens, using Code Connect, replacing raw HTML/hex/px, or wiring the 5-file
+  Redux API pattern. Also use for DS code review and common sx mistakes.
+  Load subzero-principles first. Do not use to create or edit Figma files,
+  generate Figma screens, or write PRDs — those use subzero-design-standards.
 argument-hint: "[component or file to review/generate]"
 license: Internal use
 ---
@@ -26,20 +26,26 @@ particular agent runtime, tool names, or folder convention. It only assumes:
 If you are also given Figma-derived HTML/mapping data as input, this skill
 tells you what to do with the _design system_ parts of that data. It does not
 cover Figma-specific tooling (MCP calls, node IDs, etc.) — that's a separate
-concern from "is this code DS-compliant."
+concern from "is this code DS-compliant." Use `subzero-design-standards` for
+Figma (including a demo from an existing PRD). Do not use this skill to write PRDs.
 
 ## Mandatory Skill Load Order
 
 Before generating, editing, or reviewing any JSX/TSX code, agents must read:
 
-1. `SKILL.md` (this file)
-2. `reference/token-reference.md`
-3. `reference/common-mistakes.md`
-4. `reference/validation-checklist.md`
-5. `reference/api-integration-pattern.md` (required for API-connected UI changes)
+1. `../subzero-principles/SKILL.md`
+2. `../subzero-principles/reference/tokens.md`
+3. `../subzero-principles/reference/components.md`
+4. `SKILL.md` (this file)
+5. `reference/token-reference.md`
+6. `reference/common-mistakes.md`
+7. `reference/validation-checklist.md`
+8. `reference/api-integration-pattern.md` (required for API-connected UI changes)
 
-Do not proceed with code changes until items 1-4 are loaded. If the task
-includes API wiring, item 5 is also mandatory.
+Do not proceed with code changes until items 1-7 are loaded. If the task
+includes API wiring, item 8 is also mandatory. Shared token/component language
+lives in `subzero-principles`; this skill owns `sx`, HTML→JSX mapping, and the
+Redux API pattern.
 
 ---
 

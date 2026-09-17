@@ -39,6 +39,12 @@ if (!existsSync(pluginJsonPath)) {
 
 // 2. Every skill folder name must match the "name" in its SKILL.md frontmatter.
 const skillsDir = join(ROOT, "skills");
+const expectedSkills = [
+  "subzero-principles",
+  "subzero-coding-standards",
+  "subzero-design-standards",
+];
+
 if (!existsSync(skillsDir)) {
   fail("skills/ directory is missing.");
 } else {
@@ -48,6 +54,12 @@ if (!existsSync(skillsDir)) {
 
   if (skillFolders.length === 0) {
     fail("skills/ directory contains no skill folders.");
+  }
+
+  for (const expected of expectedSkills) {
+    if (!skillFolders.includes(expected)) {
+      fail(`skills/${expected}/ is missing.`);
+    }
   }
 
   for (const folder of skillFolders) {
@@ -77,19 +89,53 @@ if (!existsSync(skillsDir)) {
   }
 }
 
-// 3. Required reference files for the subzero-coding-standards skill.
-const requiredReferenceFiles = [
-  "reference/token-reference.md",
-  "reference/common-mistakes.md",
-  "reference/validation-checklist.md",
-  "reference/api-integration-pattern.md",
-];
-const subzeroSkillDir = join(skillsDir, "subzero-coding-standards");
-if (existsSync(subzeroSkillDir)) {
-  for (const relPath of requiredReferenceFiles) {
-    if (!existsSync(join(subzeroSkillDir, relPath))) {
-      fail(`skills/subzero-coding-standards/${relPath} is missing.`);
+// 3. Required reference files per skill.
+const requiredBySkill = {
+  "subzero-principles": ["reference/tokens.md", "reference/components.md"],
+  "subzero-coding-standards": [
+    "reference/token-reference.md",
+    "reference/common-mistakes.md",
+    "reference/validation-checklist.md",
+    "reference/api-integration-pattern.md",
+  ],
+  "subzero-design-standards": [
+    "reference/figma-tokens.md",
+    "reference/discovery-protocol.md",
+    "reference/screen-composition.md",
+    "reference/figma-gotchas.md",
+  ],
+};
+
+for (const [skill, relPaths] of Object.entries(requiredBySkill)) {
+  const skillDir = join(skillsDir, skill);
+  if (!existsSync(skillDir)) continue;
+  for (const relPath of relPaths) {
+    if (!existsSync(join(skillDir, relPath))) {
+      fail(`skills/${skill}/${relPath} is missing.`);
     }
+  }
+}
+
+// 4. MCP adapter (optional but required if mcp.json is present).
+const mcpJsonPath = join(ROOT, "mcp.json");
+const mcpServerPath = join(ROOT, "mcp-server", "index.mjs");
+if (existsSync(mcpJsonPath)) {
+  let mcp;
+  try {
+    mcp = JSON.parse(readFileSync(mcpJsonPath, "utf8"));
+  } catch (e) {
+    fail(`mcp.json is not valid JSON: ${e.message}`);
+  }
+  if (mcp) {
+    if (mcp.$schema !== "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json") {
+      fail("mcp.json $schema must be the canonical Agent Plugins MCP schema URL.");
+    }
+    if (!mcp.mcpServers || !mcp.mcpServers["subzero-standards"]) {
+      fail('mcp.json must declare mcpServers["subzero-standards"].');
+    }
+  }
+  if (!existsSync(mcpServerPath)) {
+    fail("mcp-server/index.mjs is missing.");
   }
 }
 
