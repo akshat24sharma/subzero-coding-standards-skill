@@ -23,6 +23,23 @@ to keep chrome pinned.
 Inner scroll uses `primaryAxisSizingMode = 'AUTO'` so it grows with content.
 The visible area clips it, which makes prototype scroll work.
 
+## Chat / assistant (no tab bar)
+
+When the screen is a full-screen assistant, pin an app bar and a composer.
+Do **not** add `bottom_navigation` unless the brief already has tab chrome.
+Measure chrome after probing instances; do not copy a demo’s y/height.
+
+```
+Outer Frame (device size from this skill or the brief, layoutMode='NONE')
+├── App_bar (pinned top, STRETCH / MIN)
+├── Scroll Content (between bar and composer, VERTICAL, hug height)
+│   └── greeting / filters / prompts / thread (hug DS instances)
+└── Composer (pinned bottom, STRETCH / MAX)
+```
+
+Slots, colour stack, and overlap (bar/composer float over the thread):
+[conversational-ui.md](conversational-ui.md).
+
 ## Placement
 
 - Probe natural width/height and AUTO vs FIXED before placing

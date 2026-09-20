@@ -5,9 +5,10 @@ description: >-
   which Ds* component, typography, and loading/empty/error/disabled states.
   Use when the user asks what spacing/color/radius to use, $sz- vs --ds-
   names, DsButton vs DsChip vs DsBox, bottom nav, OTP vs date vs text input,
-  or the canonical component inventory. Also load first whenever applying
-  subzero-coding-standards or subzero-design-standards. Does not generate
-  React/JSX or Figma nodes by itself.
+  or the canonical component inventory. Also covers shared UX guardrails
+  (motion, confirm-before-debit, no invented facts). Also load first
+  whenever applying subzero-coding-standards or subzero-design-standards.
+  Does not generate React/JSX or Figma nodes by itself.
 argument-hint: "[screen, component, or token question]"
 license: Internal use
 ---
@@ -30,6 +31,7 @@ Before making product, design, or code decisions that touch SubZero UI:
 1. This `SKILL.md`
 2. `reference/tokens.md`
 3. `reference/components.md`
+4. `reference/ux-guardrails.md`
 
 Then load the role skill for the current task.
 
@@ -51,6 +53,7 @@ token name, or typography variant.
 - Canonical component inventory (intent → `Ds*` / Figma DS equivalent)
 - Layout rule: `DsBox` for full-width; `DsContainer` only for constrained/centered content
 - Required UI states: default, loading, empty, error, disabled, success where relevant
+- Shared UX guardrails (expressive motion, confirm-before-debit, no invented facts)
 - Speak in DS language (`DsButton` primary, `$sz-spacing-16` / `--ds-spacing-bitterCold`)
 
 **Not shared**
@@ -79,7 +82,9 @@ row of step chips unless per-step state is required).
 
 ```text
 Search          → DsSearchbar before DsTextField
+Chat composer   → dedicated assistant input before DsSearchbar or Text_Input
 Status / pill   → DsChip or DsTag before DsBox
+Chat category   → DsTag when that is the library mapping
 Image           → DsImage before a raw image frame
 Table           → DsTable family before stacked rows
 Button          → DsButton; icon-only → DsIconButton
@@ -111,7 +116,11 @@ must account for:
 - Success where an action completes
 
 Use support tokens for semantic status (`supportNegative`, `supportPositive`,
-`supportWarning`, `supportTypical`) — never a one-off red/green hex.
+`supportWarning`, `supportTypical`) — never a one-off red/green hex. Pair
+status with an icon, label, or shape, not colour alone.
+
+Motion, confirm-before-debit, and “do not invent financial facts”:
+[reference/ux-guardrails.md](reference/ux-guardrails.md).
 
 ## Out of scope
 

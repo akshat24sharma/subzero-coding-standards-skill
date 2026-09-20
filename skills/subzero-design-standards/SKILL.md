@@ -6,7 +6,9 @@ description: >-
   design, generate a screen in Figma, design a feature in Figma, build a PRD
   in Figma, push a spec to Figma, make a PM/demo from a PRD, bind
   $sz-colour-* / $sz-spacing-* variables, search Subzero V.2.0 Design System,
-  or audit a Figma file against the DS. Every node must use DS instances and
+  or audit a Figma file against the DS. Also use for conversational /
+  assistant / “ask me anything” screens (load
+  reference/conversational-ui.md). Every node must use DS instances and
   tokens (no hex, no raw px that maps to a token, no hand-drawn primitive when
   a DS component exists). Load subzero-principles first. Do not write or
   rewrite PRDs. Do not generate React/TypeScript — that is
@@ -38,13 +40,15 @@ Does **not** generate React. Hand code to `/subzero-coding-standards`.
 1. `../subzero-principles/SKILL.md`
 2. `../subzero-principles/reference/tokens.md`
 3. `../subzero-principles/reference/components.md`
-4. This `SKILL.md`
-5. `reference/figma-tokens.md`
-6. `reference/discovery-protocol.md`
-7. `reference/screen-composition.md`
-8. `reference/figma-gotchas.md`
+4. `../subzero-principles/reference/ux-guardrails.md`
+5. This `SKILL.md`
+6. `reference/figma-tokens.md`
+7. `reference/discovery-protocol.md`
+8. `reference/screen-composition.md`
+9. `reference/figma-gotchas.md`
+10. `reference/conversational-ui.md` when the brief is chat / assistant / AMA
 
-Do not place nodes until 1–7 are loaded. Load gotchas before any `use_figma`
+Do not place nodes until 1–8 are loaded. Load gotchas before any `use_figma`
 script that sets auto-layout, reactions, or fonts.
 
 ## Deal-breaker
@@ -88,8 +92,8 @@ the report and keep building what the source supports.
 ### Step 2 — Discover DS assets before drawing
 
 Never build a UI element from primitives until search confirms no SubZero
-component exists — including bottom nav, sidebar, header, search, divider,
-OTP, date, and list items.
+component exists — including bottom nav, sidebar, header, search, chat
+composer, divider, OTP, date, and list items.
 
 Never settle on the first search result. Run the 3-term search, filter to
 Subzero V.2.0, then **probe variants/props/natural size with `use_figma`
@@ -165,7 +169,10 @@ Audit the completed screen against the deal-breaker and hard rules.
 9. **No `primaryAxisSizingMode = 'FILL'` or `counterAxisSizingMode = 'HUG'`.**
 10. **Never set layout sizing before the node is appended** to an auto-layout parent.
 11. **Mobile frames must be exactly 375×812 or 390×844.**
-12. **Never build a custom bottom nav.** Use `bottom_navigation`.
+12. **Never build a custom bottom nav.** Use `bottom_navigation` when the
+    product has tab chrome. A full-screen assistant pins a composer instead
+    — do not add a tab bar to match other apps. See
+    [reference/conversational-ui.md](reference/conversational-ui.md).
 13. **Never reuse a component for a different purpose** because it was the first hit. `Text_Input` ≠ `OTP` ≠ `Date_input` ≠ `Password_input` ≠ `Phone_number_input`.
 14. **Always filter to `libraryName: "Subzero V.2.0 Design System"`.**
 15. **Never hardcode a fixed height on a container that wraps DS instances.** Hug content (`AUTO`). FIXED only for the device frame and sticky chrome.
@@ -185,6 +192,9 @@ API gotchas, prototype wiring, and the lessons-learned log:
 
 Mobile structure:
 [reference/screen-composition.md](reference/screen-composition.md).
+
+Chat / assistant screens:
+[reference/conversational-ui.md](reference/conversational-ui.md).
 
 ## Out of scope — refuse
 

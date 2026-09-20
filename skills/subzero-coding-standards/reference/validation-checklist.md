@@ -34,8 +34,11 @@ any answer is negative or unknown.
 
 - `DsSearchbar` was used for a search control when available or mapped by Code
   Connect; `DsTextField` was not chosen only for API convenience.
+- An assistant composer was **not** implemented as `DsSearchbar` when the
+  library or Code Connect maps a dedicated chat / AI / ask input.
 - `DsChip`/`DsTag`, `DsImage`, and the `DsTable` family were used for their
-  corresponding patterns before generic DS primitives.
+  corresponding patterns before generic DS primitives. Chat category filters
+  follow the tag mapping when that is what Code Connect or the library uses.
 - Any substitution is supported by an unavailable-component check and explicit
   approval.
 
@@ -368,6 +371,10 @@ custom one — don't assume it's missing without checking.
 - [ ] No `useEffect` directly calling `fetch`/`axios` — API calls go through the project's established service/hook layer
 - [ ] Unused imports removed
 - [ ] No raw numeric-looking strings passed where a token reference was expected
+- [ ] Chat composer is not `DsSearchbar` unless that is the verified library mapping
+- [ ] Chat bubbles and composer accents use colour tokens — no hex
+- [ ] Loading / empty copy does not invent account or financial facts
+- [ ] Irreversible or money-moving actions go through a confirm surface from the brief
 
 ---
 

@@ -7,7 +7,8 @@ description: >-
   styling with the sx prop, choosing --ds-spacing/--ds-colour/--ds-radius
   tokens, using Code Connect, replacing raw HTML/hex/px, or wiring the 5-file
   Redux API pattern. Also use for DS code review and common sx mistakes.
-  Load subzero-principles first. Do not use to create or edit Figma files,
+  For chat / assistant UI, also load conversational-ui.md. Load
+  subzero-principles first. Do not use to create or edit Figma files,
   generate Figma screens, or write PRDs — those use subzero-design-standards.
 argument-hint: "[component or file to review/generate]"
 license: Internal use
@@ -36,14 +37,16 @@ Before generating, editing, or reviewing any JSX/TSX code, agents must read:
 1. `../subzero-principles/SKILL.md`
 2. `../subzero-principles/reference/tokens.md`
 3. `../subzero-principles/reference/components.md`
-4. `SKILL.md` (this file)
-5. `reference/token-reference.md`
-6. `reference/common-mistakes.md`
-7. `reference/validation-checklist.md`
-8. `reference/api-integration-pattern.md` (required for API-connected UI changes)
+4. `../subzero-principles/reference/ux-guardrails.md`
+5. `SKILL.md` (this file)
+6. `reference/token-reference.md`
+7. `reference/common-mistakes.md`
+8. `reference/validation-checklist.md`
+9. `reference/api-integration-pattern.md` (required for API-connected UI changes)
+10. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
 
-Do not proceed with code changes until items 1-7 are loaded. If the task
-includes API wiring, item 8 is also mandatory. Shared token/component language
+Do not proceed with code changes until items 1-8 are loaded. If the task
+includes API wiring, item 9 is also mandatory. Shared token/component language
 lives in `subzero-principles`; this skill owns `sx`, HTML→JSX mapping, and the
 Redux API pattern.
 
@@ -620,6 +623,10 @@ pattern or when `DsSearchbar` is unavailable and the substitution is recorded
 and approved. Do not choose `DsTextField` solely because its controlled API is
 simpler.
 
+An assistant composer is a different intent: use the library / Code Connect
+chat or AI input when one exists. Do not reuse `DsSearchbar` because it is
+nearby. See `../subzero-design-standards/reference/conversational-ui.md`.
+
 ---
 
 ## 5. Component architecture rules
@@ -839,4 +846,7 @@ subzero-coding-standards/
     ├── validation-checklist.md           ← full rule list + fix snippets
     ├── common-mistakes.md                ← highest-frequency violations
     └── api-integration-pattern.md        ← 5-file Redux API template
+
+Shared (load from `../subzero-principles/reference/`): `ux-guardrails.md`.
+Chat screens also load `../subzero-design-standards/reference/conversational-ui.md`.
 ```

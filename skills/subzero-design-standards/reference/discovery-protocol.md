@@ -15,6 +15,7 @@ third-party libraries.
 
 - Navigation: `"button"`, `"bottom_nav"`, `"bottom navigation"`, `"App_bar"`, `"header"`, `"nav"`, `"sidebar"`, `"tab bar"`
 - Content: `"card"`, `"input"`, `"search"`, `"chip"`, `"avatar"`, `"table"`, `"badge"`, `"tag"`, `"modal"`, `"drawer"`, `"accordion"`, `"list item"`, `"divider"`
+- Chat (when the brief is conversational): `"tag"`, `"bubble"`, `"composer"`, `"ask"`, `"AI"`, `"chat input"`, `"quick selection"`
 - Layout: `"container"`, `"section"`, `"banner"`, `"hero"`
 
 **Variables** (`includeVariables: true`), `$sz-` names:
@@ -53,6 +54,10 @@ not listed.
 | Checkbox | `checkbox_button` | `checkbox` | `multi select` |
 | Radio | `radio_button` | `radio` | `single select` |
 | Image | `avatar` | `image` | `thumbnail` |
+| Chat composer | (search library; names vary) | `chat input` | `ask` / `AI input` |
+| Chat tag | `tag` | `chip` | `category` |
+| Chat prompt | (search) | `prompt card` | `quick selection` |
+| Chat bubble | (search) | `bubble` | `message` |
 
 **Selection:** after all three searches, prefer the most complete
 pre-assembled SubZero component over assembling atoms. Example:

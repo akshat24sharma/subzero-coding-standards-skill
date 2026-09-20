@@ -91,7 +91,11 @@ if (!existsSync(skillsDir)) {
 
 // 3. Required reference files per skill.
 const requiredBySkill = {
-  "subzero-principles": ["reference/tokens.md", "reference/components.md"],
+  "subzero-principles": [
+    "reference/tokens.md",
+    "reference/components.md",
+    "reference/ux-guardrails.md",
+  ],
   "subzero-coding-standards": [
     "reference/token-reference.md",
     "reference/common-mistakes.md",
@@ -103,6 +107,7 @@ const requiredBySkill = {
     "reference/discovery-protocol.md",
     "reference/screen-composition.md",
     "reference/figma-gotchas.md",
+    "reference/conversational-ui.md",
   ],
 };
 

@@ -50,6 +50,11 @@ third-party or unnamed library hit as SubZero.
 | FAB | `DsFab` | absolutely positioned button |
 | Menu | `DsMenu` + `DsMenuItem` | custom popup |
 | Search | `DsSearchbar` (before `DsTextField`) | text field used as search |
+| Chat / assistant composer | Library assistant / AI / ask input if one exists | `DsSearchbar` or `Text_Input` used as a chat box |
+| Chat category filter | `DsTag` when Code Connect or the library maps tag | raw pill; `DsChip` without checking the mapping |
+| Chat quick prompt | Library prompt-card / DS card | raw `DsBox` pill when a card instance exists |
+| Chat bubble | Library user / assistant bubble | hex rounded box |
+| Chat pending | `DsLoader` or DS icon + `DsTypography` | fabricated result card |
 | Card | DS card instance if one exists | generic framed box when a card component exists |
 
 ## Layout rule
@@ -64,7 +69,9 @@ Specific beats generic. Composite beats atom. First search hit is not proof.
 
 ```text
 Search control     → DsSearchbar before DsTextField
+Chat composer      → dedicated assistant input, not DsSearchbar
 Status/filter pill → DsChip or DsTag before DsBox
+Chat category      → DsTag when that is the mapping, not a homemade pill
 Image              → DsImage before DsBox as img
 Table              → DsTable before flex rows
 OTP                → OTP / Ds OTP input, not six boxes or a text field
@@ -94,6 +101,10 @@ as the same intent, not as interchangeable widgets:
 | Select | `DsSelect` | `Suggestion_list` |
 | App bar | `DsAppBar` | `App_bar` |
 | Bottom nav | DS nav | `bottom_navigation` |
+| Chat composer | dedicated assistant input if it exists | AI / ask / chat input (search; names vary) |
+| Chat tag | `DsTag` | `tag` |
+| Chat prompt | DS card / prompt card | `Quick selection` / prompt card (search) |
+| Chat bubble | library bubble | user / assistant bubble (search) |
 | Progress | `DsProgressTracker` | `Progress tracker_New` |
 
 Designers must filter library hits to **Subzero V.2.0 Design System**.

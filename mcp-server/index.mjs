@@ -121,7 +121,7 @@ const TOOLS = [
   {
     name: "load_skill",
     description:
-      "Load one SubZero SKILL.md (unchanged). Use subzero-principles for tokens/components, subzero-coding-standards for React/JSX/sx/Redux, subzero-design-standards for Figma/PRD demos. Call before doing that work. Set include_references true to also attach every reference/*.md.",
+      "Load one SubZero SKILL.md (unchanged). Use subzero-principles for tokens/components/ux-guardrails, subzero-coding-standards for React/JSX/sx/Redux, subzero-design-standards for Figma/PRD demos and conversational UI. Call before doing that work. Set include_references true to also attach every reference/*.md.",
     inputSchema: {
       type: "object",
       properties: {
