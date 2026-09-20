@@ -52,7 +52,9 @@ Slots, colour stack, and overlap (bar/composer float over the thread):
 ## Required states
 
 Show or explicitly mark: default, loading/skeleton, empty, error, disabled,
-and success if an action exists. Semantic status uses support color tokens.
+and success if an action exists. Empty = missing + why + next step. Error =
+problem + recovery. Semantic status uses support color tokens plus icon or
+label.
 
 ## Search pattern reminder
 

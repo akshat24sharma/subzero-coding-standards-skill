@@ -8,7 +8,8 @@ description: >-
   $sz-colour-* / $sz-spacing-* variables, search Subzero V.2.0 Design System,
   or audit a Figma file against the DS. Also use for conversational /
   assistant / “ask me anything” screens (load
-  reference/conversational-ui.md). Every node must use DS instances and
+  reference/conversational-ui.md). Also load reference/ux-review.md before
+  calling a screen done. Every node must use DS instances and
   tokens (no hex, no raw px that maps to a token, no hand-drawn primitive when
   a DS component exists). Load subzero-principles first. Do not write or
   rewrite PRDs. Do not generate React/TypeScript — that is
@@ -41,15 +42,18 @@ Does **not** generate React. Hand code to `/subzero-coding-standards`.
 2. `../subzero-principles/reference/tokens.md`
 3. `../subzero-principles/reference/components.md`
 4. `../subzero-principles/reference/ux-guardrails.md`
-5. This `SKILL.md`
-6. `reference/figma-tokens.md`
-7. `reference/discovery-protocol.md`
-8. `reference/screen-composition.md`
-9. `reference/figma-gotchas.md`
-10. `reference/conversational-ui.md` when the brief is chat / assistant / AMA
+5. `../subzero-principles/reference/experience-behaviours.md`
+6. This `SKILL.md`
+7. `reference/figma-tokens.md`
+8. `reference/discovery-protocol.md`
+9. `reference/screen-composition.md`
+10. `reference/figma-gotchas.md`
+11. `reference/ux-review.md`
+12. `reference/conversational-ui.md` when the brief is chat / assistant / AMA
 
-Do not place nodes until 1–8 are loaded. Load gotchas before any `use_figma`
-script that sets auto-layout, reactions, or fonts.
+Do not place nodes until 1–10 are loaded. Load gotchas before any `use_figma`
+script that sets auto-layout, reactions, or fonts. Run `ux-review.md`
+before declaring the screen done.
 
 ## Deal-breaker
 
@@ -142,7 +146,8 @@ For each section, in order:
 
 ### Step 6 — Final compliance audit
 
-Audit the completed screen against the deal-breaker and hard rules.
+Audit the completed screen against the deal-breaker, hard rules, and
+[reference/ux-review.md](reference/ux-review.md).
 
 - Must-fix: hex fills, raw px that maps to a token, hand-drawn DS
   stand-ins, wrong input type, wrong library, AUTO component stretched,
@@ -195,6 +200,9 @@ Mobile structure:
 
 Chat / assistant screens:
 [reference/conversational-ui.md](reference/conversational-ui.md).
+
+Experience review (before done):
+[reference/ux-review.md](reference/ux-review.md).
 
 ## Out of scope — refuse
 

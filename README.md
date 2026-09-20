@@ -105,6 +105,7 @@ skills/
       tokens.md
       components.md
       ux-guardrails.md
+      experience-behaviours.md
   subzero-coding-standards/
     SKILL.md
     reference/
@@ -120,6 +121,7 @@ skills/
       screen-composition.md
       figma-gotchas.md
       conversational-ui.md
+      ux-review.md
 scripts/
   validate-plugin.mjs
 ```

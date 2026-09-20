@@ -374,6 +374,13 @@ custom one — don't assume it's missing without checking.
 - [ ] Chat composer is not `DsSearchbar` unless that is the verified library mapping
 - [ ] Chat bubbles and composer accents use colour tokens — no hex
 - [ ] Loading / empty copy does not invent account or financial facts
+- [ ] Empty states explain missing + why + next step
+- [ ] Errors use problem + recovery, not “Something went wrong”
+- [ ] Primary control names the outcome (not Submit / Proceed / Click here)
+- [ ] One primary action; secondaries use a quieter DS variant
+- [ ] Confirm matches consequence (money / irreversible / unexpected) — not every tap
+- [ ] Defaults do not pre-commit payees, amounts, consent, or investments
+- [ ] AI recommendation is not a silent execute; confirm before act
 - [ ] Irreversible or money-moving actions go through a confirm surface from the brief
 
 ---

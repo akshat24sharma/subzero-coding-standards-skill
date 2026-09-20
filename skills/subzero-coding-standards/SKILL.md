@@ -8,7 +8,8 @@ description: >-
   tokens, using Code Connect, replacing raw HTML/hex/px, or wiring the 5-file
   Redux API pattern. Also use for DS code review and common sx mistakes.
   For chat / assistant UI, also load conversational-ui.md. Load
-  subzero-principles first. Do not use to create or edit Figma files,
+  subzero-principles first (including ux-guardrails and
+  experience-behaviours). Do not use to create or edit Figma files,
   generate Figma screens, or write PRDs — those use subzero-design-standards.
 argument-hint: "[component or file to review/generate]"
 license: Internal use
@@ -38,15 +39,16 @@ Before generating, editing, or reviewing any JSX/TSX code, agents must read:
 2. `../subzero-principles/reference/tokens.md`
 3. `../subzero-principles/reference/components.md`
 4. `../subzero-principles/reference/ux-guardrails.md`
-5. `SKILL.md` (this file)
-6. `reference/token-reference.md`
-7. `reference/common-mistakes.md`
-8. `reference/validation-checklist.md`
-9. `reference/api-integration-pattern.md` (required for API-connected UI changes)
-10. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
+5. `../subzero-principles/reference/experience-behaviours.md`
+6. `SKILL.md` (this file)
+7. `reference/token-reference.md`
+8. `reference/common-mistakes.md`
+9. `reference/validation-checklist.md`
+10. `reference/api-integration-pattern.md` (required for API-connected UI changes)
+11. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
 
-Do not proceed with code changes until items 1-8 are loaded. If the task
-includes API wiring, item 9 is also mandatory. Shared token/component language
+Do not proceed with code changes until items 1-9 are loaded. If the task
+includes API wiring, item 10 is also mandatory. Shared token/component language
 lives in `subzero-principles`; this skill owns `sx`, HTML→JSX mapping, and the
 Redux API pattern.
 
@@ -847,6 +849,7 @@ subzero-coding-standards/
     ├── common-mistakes.md                ← highest-frequency violations
     └── api-integration-pattern.md        ← 5-file Redux API template
 
-Shared (load from `../subzero-principles/reference/`): `ux-guardrails.md`.
+Shared (load from `../subzero-principles/reference/`): `ux-guardrails.md`,
+`experience-behaviours.md`.
 Chat screens also load `../subzero-design-standards/reference/conversational-ui.md`.
 ```

@@ -99,6 +99,27 @@ chat input). That is **not** `DsSearchbar` and **not** a generic
 - Accents (focus stroke, send enabled) use action / surface tokens, not a
   new pink or purple.
 
+## Intelligence on this surface
+
+Follow `../../subzero-principles/reference/ux-guardrails.md`:
+Explain → Recommend → Confirm → Act → Recover.
+
+Name the states the brief implies (do not invent extra product features):
+
+```text
+Idle → receiving → thinking → generating → answer
+  → explanation (if consequence needs it) → action
+  → confirm → success or recovery
+```
+
+- The customer can tell listening vs thinking vs waiting for approval vs
+  unable.
+- A suggestion is not a debit. Execution is a separate control after
+  confirm.
+- Pending copy is honest. Do not present an uncertain figure as a balance.
+- If the assistant cannot finish: keep the thread, explain the limit, offer
+  another path. Do not reset to empty.
+
 ## Colour, depth, and overlap
 
 The worked example stays interesting because surfaces **step**, chrome
