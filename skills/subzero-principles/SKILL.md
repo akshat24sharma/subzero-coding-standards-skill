@@ -5,9 +5,10 @@ description: >-
   which Ds* component, typography, and loading/empty/error/disabled states.
   Use when the user asks what spacing/color/radius to use, $sz- vs --ds-
   names, DsButton vs DsChip vs DsBox, bottom nav, OTP vs date vs text input,
-  or the canonical component inventory. Also covers shared UX guardrails
-  and experience behaviours (conflict order, one primary action, errors,
-  confirm-by-consequence, AI recommend vs execute). Also load first
+  or the canonical component inventory. Also covers shared UX guardrails,
+  experience behaviours, and content design (voice Simple / Trustworthy /
+  Purposeful; tone by screen and new vs existing user). Shared rule: if it
+  is clipped or overflows the device, it is not done. Also load first
   whenever applying subzero-coding-standards or subzero-design-standards.
   Does not generate React/JSX or Figma nodes by itself.
 argument-hint: "[screen, component, or token question]"
@@ -34,6 +35,7 @@ Before making product, design, or code decisions that touch SubZero UI:
 3. `reference/components.md`
 4. `reference/ux-guardrails.md`
 5. `reference/experience-behaviours.md`
+6. `reference/content-design.md`
 
 Then load the role skill for the current task.
 
@@ -47,6 +49,10 @@ Then load the role skill for the current task.
 When in doubt, find the closest DS component. Never invent a new primitive,
 token name, or typography variant.
 
+> **If it is clipped or overflows the device, it is not done.** Token and
+> component compliance does not excuse cropped copy, overflowing text, or
+> clipped chrome.
+
 ## What is shared vs role-specific
 
 **Shared (this skill)**
@@ -55,8 +61,8 @@ token name, or typography variant.
 - Canonical component inventory (intent → `Ds*` / Figma DS equivalent)
 - Layout rule: `DsBox` for full-width; `DsContainer` only for constrained/centered content
 - Required UI states: default, loading, empty, error, disabled, success where relevant
-- Shared UX guardrails and experience behaviours (conflict order, states,
-  content, AI, journey)
+- Shared UX guardrails, experience behaviours, and content design (voice,
+  tone by screen × new vs existing user)
 - Speak in DS language (`DsButton` primary, `$sz-spacing-16` / `--ds-spacing-bitterCold`)
 
 **Not shared**
@@ -85,7 +91,7 @@ row of step chips unless per-step state is required).
 
 ```text
 Search          → DsSearchbar before DsTextField
-Chat composer   → dedicated assistant input before DsSearchbar or Text_Input
+Chat composer   → 3.0 Ai Search before DsSearchbar or V.2.0 Text_Input
 Status / pill   → DsChip or DsTag before DsBox
 Chat category   → DsTag when that is the library mapping
 Image           → DsImage before a raw image frame
@@ -125,9 +131,12 @@ Use support tokens for semantic status (`supportNegative`, `supportPositive`,
 `supportWarning`, `supportTypical`) — never a one-off red/green hex. Pair
 status with an icon, label, or shape, not colour alone.
 
-Guardrails (always) and behaviours (always):
+Guardrails, behaviours, and copy (always):
 [reference/ux-guardrails.md](reference/ux-guardrails.md),
-[reference/experience-behaviours.md](reference/experience-behaviours.md).
+[reference/experience-behaviours.md](reference/experience-behaviours.md),
+[reference/content-design.md](reference/content-design.md).
+
+**If it is clipped or overflows the device, it is not done.**
 
 ## Out of scope
 

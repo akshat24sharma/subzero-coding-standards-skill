@@ -58,3 +58,9 @@ node.reactions = [{
 | 15 | OTP Size=M Digit=6 (376px) in a 375px frame | Probe width; Size=S Digit=6 ≈ 280px |
 | 16 | Fixed 388px height on a form card | Wrappers around DS instances use `primaryAxisSizingMode = 'AUTO'` |
 | 17 | Assembled `horizontal_step` when `Progress tracker_New` exists | Prefer the composite after all 3 searches |
+| 18 | `bubble.resize(287, 10)` then primaryAxisSizingMode FIXED + clipsContent | VERTICAL + primary AUTO; text FILL + HEIGHT; clipsContent false |
+| 19 | Composer FIXED 80 (or AUTO collapsing to 24) while Ai Search / Text_Input is taller | Prefer 3.0 Ai Search; hide label_wrapper only on V.2.0 Text_Input; composer counter AUTO; pin y = 812 - height |
+| 20 | Body text HEIGHT but width FIXED at measured unwrapped width | FILL then HEIGHT so wrap width = parent |
+| 21 | Checkbox / long label WIDTH_AND_HEIGHT | Instance FILL; text HEIGHT + FILL |
+| 22 | Only fix layers named “AI turn” | Also match unnamed frames that are message bubbles |
+| 23 | Open Suggestion_list in a chat column | Closed field; never let the menu eat the composer |

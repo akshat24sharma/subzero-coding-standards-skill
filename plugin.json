@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "subzero-coding-standards",
   "description": "SubZero (@am92/react-design-system) standards: shared DS principles, React/TypeScript coding, and SubZero Figma screens (including demos from an existing PRD).",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": {
     "name": "SubZero Team",
     "url": "https://github.com/akshat24sharma/subzero-coding-standards-skill"

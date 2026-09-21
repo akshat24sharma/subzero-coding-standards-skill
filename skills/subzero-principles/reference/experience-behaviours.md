@@ -2,8 +2,8 @@
 
 Companion to [ux-guardrails.md](ux-guardrails.md). Same rules, with the
 small asks and avoids consumers should apply on every journey, form, and
-AI surface. Still Subzero for tokens and components. Copy comes from the
-brief.
+AI surface. Still Subzero for tokens and components. Facts come from the
+brief; how we say them is [content-design.md](content-design.md).
 
 ## Simplify
 
@@ -71,6 +71,10 @@ better.
 If it only works for the ideal user, it is not finished. Contrast, focus,
 targets, type, screen reader, reduced motion, colour independence, simple
 language, resilient layout.
+
+**If it is clipped or overflows the device, it is not done.** Cropped
+bubbles, clipped composers, and text past the phone frame fail regardless
+of token or component compliance.
 
 ## Intelligence
 

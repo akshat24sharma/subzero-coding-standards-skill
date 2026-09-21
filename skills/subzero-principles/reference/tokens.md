@@ -132,5 +132,7 @@ cat node_modules/@am92/react-design-system/dist/tokens/colors.js
 cat node_modules/@am92/react-design-system/dist/tokens/radius.js
 ```
 
-Figma: search the library **Subzero V.2.0 Design System** for `$sz-colour-*`,
-`$sz-spacing-*`, and text styles. Do not use tokens from other libraries.
+Figma: search **Subzero 3.0 Design System** first for `$sz-colour-*`,
+`$sz-spacing-*`, and text styles. If 3.0 publishes none, bind the same
+names from **Subzero V.2.0 Design System**. Do not use tokens from other
+libraries.

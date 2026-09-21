@@ -19,7 +19,8 @@ Support:    $sz-colour-support-negative / support-positive / support-warning / s
 Strokes:    $sz-colour-stroke-default / stroke-disabled / stroke-hover
 ```
 
-Bind the library variable. Do not duplicate as local hex styles.
+Bind the library variable (3.0 first, then V.2.0). Do not duplicate as
+local hex styles.
 
 ## Spacing (`$sz-spacing-*`)
 

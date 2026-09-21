@@ -5,7 +5,7 @@ One plugin install, three skills:
 
 | Skill | Who | Slash command |
 | ----- | --- | ------------- |
-| Shared DS language (tokens, component inventory) | Everyone | `/subzero-principles` |
+| Shared DS language (tokens, component inventory, voice/tone) | Everyone | `/subzero-principles` |
 | React/TypeScript coding (`sx`, HTML→`Ds*`, Redux 5-file API) | Developers | `/subzero-coding-standards` |
 | SubZero Figma screens from a prompt or existing PRD | Designers and PMs | `/subzero-design-standards` |
 
@@ -16,7 +16,9 @@ from a PRD uses `/subzero-design-standards`. This plugin does not write PRDs.
 ## Prerequisites
 
 - **Coding skill:** a target project with `@am92/react-design-system` installed.
-- **Design skill:** a Figma file with the SubZero V.2.0 library (MCP optional).
+- **Design skill:** a Figma file with **Subzero 3.0 Design System**
+  (conversational) and **Subzero V.2.0 Design System** (everything 3.0
+  does not cover). MCP optional.
   PMs use this same skill with an existing PRD to get a demo — they do not
   need a separate skill.
 - VS Code / Cursor with plugins enabled (`chat.plugins.enabled` is `true` by default).
@@ -106,6 +108,7 @@ skills/
       components.md
       ux-guardrails.md
       experience-behaviours.md
+      content-design.md
   subzero-coding-standards/
     SKILL.md
     reference/
@@ -122,6 +125,7 @@ skills/
       figma-gotchas.md
       conversational-ui.md
       ux-review.md
+      visual-layout-qa.md
 scripts/
   validate-plugin.mjs
 ```

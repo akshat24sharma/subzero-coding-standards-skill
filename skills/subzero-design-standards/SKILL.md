@@ -5,13 +5,14 @@ description: >-
   existing PRD, spec, or description. Use when the user asks to create a Figma
   design, generate a screen in Figma, design a feature in Figma, build a PRD
   in Figma, push a spec to Figma, make a PM/demo from a PRD, bind
-  $sz-colour-* / $sz-spacing-* variables, search Subzero V.2.0 Design System,
+  $sz-colour-* / $sz-spacing-* variables, search Subzero 3.0 then V.2.0,
   or audit a Figma file against the DS. Also use for conversational /
-  assistant / “ask me anything” screens (load
-  reference/conversational-ui.md). Also load reference/ux-review.md before
-  calling a screen done. Every node must use DS instances and
-  tokens (no hex, no raw px that maps to a token, no hand-drawn primitive when
-  a DS component exists). Load subzero-principles first. Do not write or
+  assistant / “ask me anything” screens (load conversational-ui.md). Load
+  ux-review.md and visual-layout-qa.md before calling a screen done —
+  cropped, overflowing, or clipped chrome is not done. Every node must use
+  DS instances and tokens (no hex, no raw px that maps to a token, no
+  hand-drawn primitive when a DS component exists). Load
+  subzero-principles first (including content-design). Do not write or
   rewrite PRDs. Do not generate React/TypeScript — that is
   subzero-coding-standards.
 argument-hint: "[screen, PRD, or Figma file to design]"
@@ -43,17 +44,21 @@ Does **not** generate React. Hand code to `/subzero-coding-standards`.
 3. `../subzero-principles/reference/components.md`
 4. `../subzero-principles/reference/ux-guardrails.md`
 5. `../subzero-principles/reference/experience-behaviours.md`
-6. This `SKILL.md`
-7. `reference/figma-tokens.md`
-8. `reference/discovery-protocol.md`
-9. `reference/screen-composition.md`
-10. `reference/figma-gotchas.md`
-11. `reference/ux-review.md`
-12. `reference/conversational-ui.md` when the brief is chat / assistant / AMA
+6. `../subzero-principles/reference/content-design.md`
+7. This `SKILL.md`
+8. `reference/figma-tokens.md`
+9. `reference/discovery-protocol.md`
+10. `reference/screen-composition.md`
+11. `reference/figma-gotchas.md`
+12. `reference/ux-review.md`
+13. `reference/visual-layout-qa.md`
+14. `reference/conversational-ui.md` when the brief is chat / assistant / AMA
 
-Do not place nodes until 1–10 are loaded. Load gotchas before any `use_figma`
-script that sets auto-layout, reactions, or fonts. Run `ux-review.md`
-before declaring the screen done.
+Do not place nodes until 1–11 are loaded. Load gotchas before any `use_figma`
+script that sets auto-layout, reactions, or fonts. Run `ux-review.md` and
+`visual-layout-qa.md` (geometry A + screenshots B on **every** device
+frame) before declaring the screen done. DS tokens passing is not enough.
+User-facing strings follow `content-design.md`.
 
 ## Deal-breaker
 
@@ -74,11 +79,21 @@ are code spacing names, not Figma variable names.
 
 Bind variables. Do not paint hex even if the hex equals a token.
 
-Filter every `search_design_system` hit to
-`libraryName: "Subzero V.2.0 Design System"`. Unnamed (`null`) and
-third-party libraries are not SubZero.
+**Library precedence.** Filter every `search_design_system` hit this way:
+
+1. Prefer `libraryName: "Subzero 3.0 Design System"` (published file:
+   https://www.figma.com/design/YBhe8vnUvSgR8KzbruzafR/Subzero-3.0-Design-System).
+2. Use `libraryName: "Subzero V.2.0 Design System"` only when 3.0 has no
+   component for that **intent**.
+3. Remix Icons is allowed for glyphs only.
+
+Unnamed (`null`), Material, community kits, and other libraries are not
+SubZero. Do not paste per-component node URLs — search by name and use the
+returned `componentKey`. Tokens (`$sz-*`) and text styles: search 3.0 first;
+if none publish, bind from V.2.0.
 
 Full Figma token lists: [reference/figma-tokens.md](reference/figma-tokens.md).
+Search order: [reference/discovery-protocol.md](reference/discovery-protocol.md).
 
 ## Workflow — strict order
 
@@ -99,10 +114,10 @@ Never build a UI element from primitives until search confirms no SubZero
 component exists — including bottom nav, sidebar, header, search, chat
 composer, divider, OTP, date, and list items.
 
-Never settle on the first search result. Run the 3-term search, filter to
-Subzero V.2.0, then **probe variants/props/natural size with `use_figma`
-before placing**. Prefer the most complete pre-assembled component over
-atoms.
+Never settle on the first search result. Run the 3-term search, keep 3.0
+hits first and V.2.0 only if 3.0 misses that intent, then **probe
+variants/props/natural size with `use_figma` before placing**. Prefer the
+most complete pre-assembled component over atoms.
 
 Protocol, search table, and probe scripts:
 [reference/discovery-protocol.md](reference/discovery-protocol.md).
@@ -135,7 +150,9 @@ For each section, in order:
 3. Import DS variables by key — bind via `setBoundVariable` /
    `setBoundVariableForPaint`
 4. Import DS text styles — apply via `node.textStyleId`
-5. Set component text via `setProperties()` using **probed** property keys
+5. Set component text via `setProperties()` using **probed** property keys.
+   Copy follows `../subzero-principles/reference/content-design.md`
+   (voice + tone for this screen × new vs existing).
 6. **Append the section to the wrapper first**, then set
    `layoutSizingHorizontal = 'FILL'` / `layoutSizingVertical = 'FILL'`
 7. `get_screenshot` and verify compliance before the next section
@@ -155,11 +172,37 @@ Audit the completed screen against the deal-breaker, hard rules, and
 - Document remaining low-severity findings; do not declare done with
   must-fix issues open
 
-### Step 7 — Deliver
+### Step 7 — Visual layout QA (blocking)
+
+After nodes exist, **before** declaring the screen done, run
+[reference/visual-layout-qa.md](reference/visual-layout-qa.md).
+
+- **A. Geometry audit** (`use_figma`, required) on every 375×812 / 390×844
+  frame: app bar and composer fully inside; composer hugs then
+  `y = device.height - height`; no TEXT/INSTANCE past device right; bubbles
+  hug height (`primaryAxisSizingMode = AUTO`), message text FILL + HEIGHT,
+  `clipsContent=false` unless designed scroll; find bubbles by structure
+  not only `"AI turn"`; chat composer is 3.0 `Ai Search` (if V.2.0
+  `Text_Input` is the fallback, hide `label_wrapper`); no open
+  `Suggestion_list` colliding with the composer.
+- **B. Screenshot audit** (`get_screenshot`, required) of **every** device
+  frame. Fail on cropped bubble copy, clipped composer/send, overflow past
+  the phone, open dropdowns covering chrome, progress/buttons clipped.
+- **C. Fail / fix loop:** if any check fails, STOP, fix, re-run A + B.
+  Do not add more screens on a broken shell.
+
+A single hero screenshot is not enough. Token/DS checks passing is not
+enough. If it is clipped or overflows the device, it is not done.
+
+### Step 8 — Deliver
+
+A screen is done only if DS compliance passes **and** Visual layout QA
+A + B pass on every device frame in the set.
 
 - Figma node ID / link
 - Sections built and remaining findings
 - Deliberate non-token spacing with justification
+- Visual layout QA: geometry + screenshot result per device frame
 
 ## Hard rules — never break
 
@@ -179,10 +222,19 @@ Audit the completed screen against the deal-breaker, hard rules, and
     — do not add a tab bar to match other apps. See
     [reference/conversational-ui.md](reference/conversational-ui.md).
 13. **Never reuse a component for a different purpose** because it was the first hit. `Text_Input` ≠ `OTP` ≠ `Date_input` ≠ `Password_input` ≠ `Phone_number_input`.
-14. **Always filter to `libraryName: "Subzero V.2.0 Design System"`.**
-15. **Never hardcode a fixed height on a container that wraps DS instances.** Hug content (`AUTO`). FIXED only for the device frame and sticky chrome.
+14. **Library filter:** prefer `libraryName: "Subzero 3.0 Design System"`.
+    Fall back to `"Subzero V.2.0 Design System"` only when 3.0 has no match
+    for that intent. Never treat `null` or third-party kits as SubZero.
+15. **Never hardcode a fixed height on a container that wraps DS instances.** Hug content (`AUTO`). The device frame is FIXED. Sticky chrome is pinned, but its **content axis hugs** children (do not FIXED-short the composer).
 16. **Pick the size variant whose natural width fits.** Never stretch or clip an AUTO-sized instance.
 17. **Prefer the most complete pre-assembled DS component** (e.g. `Progress tracker_New` over assembling `horizontal_step` atoms) unless independent per-step state is required.
+18. **Never declare a screen done without Visual layout QA A + B** on every device frame. Cropped copy, overflowing text, or clipped chrome is a must-fix.
+19. **Never FIXED-height a message bubble/card with `clipsContent=true`.** Hug (`primaryAxisSizingMode = AUTO`); wrapping body copy is FILL + `textAutoResize = HEIGHT`, never `WIDTH_AND_HEIGHT`.
+20. **Composer must hug then pin:** use 3.0 `Ai Search`, not V.2.0
+    `Text_Input` or `DsSearchbar`, unless 3.0 has no composer. If the
+    fallback is `Text_Input`, hide `label_wrapper` (not only `label_text`).
+    Counter axis AUTO; `composer.y = device.height - composer.height`;
+    children must fully paint.
 
 ## Error recovery
 
@@ -203,6 +255,12 @@ Chat / assistant screens:
 
 Experience review (before done):
 [reference/ux-review.md](reference/ux-review.md).
+
+Visual layout QA (blocking, before done):
+[reference/visual-layout-qa.md](reference/visual-layout-qa.md).
+
+Voice and tone (labels, errors, loaders, empty/success, OTP):
+[../subzero-principles/reference/content-design.md](../subzero-principles/reference/content-design.md).
 
 ## Out of scope — refuse
 

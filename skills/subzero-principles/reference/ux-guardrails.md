@@ -83,6 +83,10 @@ Never leave the customer wondering whether the system heard them.
 
 ## Content
 
+Voice and tone tables (new vs existing, by screen type):
+[content-design.md](content-design.md). Apply whenever writing labels,
+errors, loaders, empty/success, OTP, notifications, or modals.
+
 - Clear, concise, contextual, human, action-oriented, transparent,
   respectful.
 - Plain language. No internal or backend terms. No blame for system
@@ -110,6 +114,10 @@ Never leave the customer wondering whether the system heard them.
 - Show the **decision** before a raw dataset (summary, then detail).
 - Localisation: layouts survive longer copy, Indian languages, wrapping,
   and dynamic names/amounts. Do not design to a fixed string length.
+- **If it is clipped or overflows the device, it is not done.** Cropped
+  copy, overflowing text, or clipped chrome fails even when DS tokens and
+  components are correct. Run visual-layout QA on every device frame
+  (design) and every implemented screen (code) before calling done.
 
 ## Accessibility (floor)
 
@@ -118,6 +126,9 @@ Never leave the customer wondering whether the system heard them.
   risk.
 - Visible focus, logical order, accessible names, keyboard on web.
 - Comfortable touch targets; the hit area may be larger than the icon.
+- Layout must contain its content: no cropped bubbles, no clipped composer,
+  no text past the device. If it is clipped or overflows the device, it is
+  not done.
 - Reduced motion is first-class. Every animated state has a static twin.
 - Gesture-only actions need an alternative.
 - Low literacy, low bandwidth, assistive tech.
@@ -153,3 +164,5 @@ when the UI is conversational.
 
 More “design for / avoid” on journeys and copy:
 [experience-behaviours.md](experience-behaviours.md).
+Voice and tone tables:
+[content-design.md](content-design.md).

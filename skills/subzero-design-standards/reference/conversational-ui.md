@@ -11,9 +11,13 @@ A worked example (optional, open only when placing or pixel-checking):
 
 https://www.figma.com/design/zMSPR1WbEYhvPHDkXP00S1/Demo-Avinash?node-id=63-29545
 
-Search the live SubZero V.2.0 library for current instance names. Demo layer
-names (`tag`, `Quick selection cards`, `User bubble`, `Ai Search input field`)
-are hints, not a frozen inventory.
+Conversational instances come from **Subzero 3.0 Design System** first:
+
+https://www.figma.com/design/YBhe8vnUvSgR8KzbruzafR/Subzero-3.0-Design-System
+
+Search that library by name. Demo layer names are hints, not a frozen
+inventory. Use V.2.0 (`App_bar`, `Text_Input`, `tag`, …) only when 3.0 has
+no match for that slot. Do not paste per-component node URLs.
 
 ## When to use
 
@@ -37,10 +41,28 @@ chat tree.
 
 Fill only the slots the brief needs. Order is typical, not mandatory.
 
+Search **Subzero 3.0 Design System** for the names below. Probe variants
+before placing. Fall back to V.2.0 / `Ds*` only if 3.0 has no match.
+
+| Slot | Search in 3.0 | Do not |
+| ---- | ------------- | ------ |
+| Assistant header | `Header Logo` | Custom bar when this exists |
+| Composer | `Ai Search` (optional `Ai Search Entry`) | `DsSearchbar`, V.2.0 `Text_Input` |
+| User turn | `Chat bubble user` | Hex rounded box |
+| Agent turn | `Chat bubble agent` | Hex rounded box |
+| Timestamp | `Message Time` | Raw caption |
+| Quick prompts | `Quick selection cards` | Homemade pills |
+| Quick actions | `Quick actions` | Extra buttons assembled from atoms |
+| Nudge / insight | `Nudge` / `Ai Nudge` | Untokened banner |
+| Thinking / pending | `Thinking State` / `Loading text` | Fabricated result card |
+| Category filter | `tag` (3.0 or V.2.0 equivalent) | Raw pill |
+
 ### App bar
 
-`App_bar` / `DsAppBar`. Title and trailing actions come from the product.
-Back is common; omit if the shell already provides it.
+Prefer 3.0 `Header Logo` on a conversational screen. If 3.0 has no header
+for this brief, use V.2.0 `App_bar` / `DsAppBar`. Title and trailing
+actions come from the product. Back is common; omit if the shell already
+provides it.
 
 ### Greeting (empty)
 
@@ -54,10 +76,10 @@ invent a mascot.
 
 ### Category filters
 
-Optional. Horizontal `DsTag` (or the library equivalent Code Connect maps).
-Selected uses the DS selected variant. Overflow scrolls. Icons come from
-the DS set that matches the category — do not copy placeholder icons from
-a Code Connect snippet.
+Optional. Horizontal 3.0 `tag` / `DsTag` (or the V.2.0 equivalent Code
+Connect maps). Selected uses the DS selected variant. Overflow scrolls.
+Icons come from the DS set that matches the category — do not copy
+placeholder icons from a Code Connect snippet.
 
 `DsChip` only if search/Code Connect says the control is a chip, not a tag.
 
@@ -65,8 +87,9 @@ a Code Connect snippet.
 
 Optional. Tappable suggestions that send that prompt into the thread.
 
-Prefer a library “quick selection” / prompt-card instance or a DS card.
-Compose from `DsBox` + `DsTypography` only after search finds nothing.
+Prefer 3.0 `Quick selection cards` (and `Quick actions` when the brief
+needs tap chips). Compose from `DsBox` + `DsTypography` only after search
+finds nothing in 3.0 then V.2.0.
 
 Emphasis (bold span, icon) is fine when it clarifies the ask. No urgency
 manufacturing, no countdown, no gamified pressure on money.
@@ -77,27 +100,56 @@ Count, wording, and layout (stack vs wrap) come from the brief.
 
 User turns, assistant turns, and pending status.
 
-- Outgoing / incoming: use the library bubble (or the closest DS composite).
+- Outgoing / incoming: 3.0 `Chat bubble user` / `Chat bubble agent`.
   Right/left alignment follows the product, not a hardcoded width.
+  Timestamp: `Message Time` if the brief shows time.
+- **Bubble slot (layout):** VERTICAL auto-layout, `primaryAxisSizingMode =
+  AUTO` (hug height). Never `resize(w, 10)` / FIXED 24px with
+  `clipsContent=true` — that crops long copy mid-sentence.
+- **Message text:** after append, `layoutSizingHorizontal = FILL` and
+  `textAutoResize = HEIGHT`. Never `WIDTH_AND_HEIGHT` for wrapping body
+  copy (consent rows, success lines, bubble text).
+- **`clipsContent=false`** on bubbles/cards unless overflow is a designed
+  scroll region.
+- Find bubbles by **structure** (frame + only TEXT children, width ~287,
+  inside scroll), not only layer name `"AI turn"`. Later screens often
+  use unnamed Frames.
 - Bubble fill, radius, and time style bind tokens. If a demo painted a
   brand hex, **do not ship the hex** — bind a documented `$sz-colour-*` /
   `--ds-colour-*` (ask if no chat-outgoing token exists).
-- Pending: icon or `DsLoader` **plus** a status line that is true
-  (“checking…”, “fetching {the thing the user asked}”). Never a fabricated
-  balance, insight, or account fact.
+- Pending: 3.0 `Thinking State` or `Loading text`, else `DsLoader` **plus**
+  a status line that is true (“checking…”, “fetching {the thing the user
+  asked}”). Never a fabricated balance, insight, or account fact.
 - Reduced motion: drop cycling placeholders and spinners; keep the text.
 
 ### Composer
 
-Dedicated assistant composer if the library has one (search: AI / ask /
-chat input). That is **not** `DsSearchbar` and **not** a generic
-`Text_Input` used as a search box.
+Use 3.0 `Ai Search` (states include Default / Typing / Filled / Disabled,
+with and without Upload). That is **not** `DsSearchbar` and **not** V.2.0
+`Text_Input` unless 3.0 has no composer for this brief.
 
-- Placeholder and send/voice/attach actions come from the brief.
+- Placeholder and send/voice/attach actions come from the brief. 3.0 has
+  `Upload`, `Input actions`, and `Fab buttons` when those slots are needed.
 - Send stays disabled until there is something to send, unless the brief
   says otherwise.
 - Accents (focus stroke, send enabled) use action / surface tokens, not a
   new pink or purple.
+- **Hug, then pin.** Composer counter axis (vertical) is `AUTO`. Never
+  FIXED 80 (or AUTO collapsing to 24) while the field is taller. After hug:
+  `composer.y = device.height - composer.height`. Children must fully
+  paint; `clipsContent` must not hide the field or send.
+- **Label slot (V.2.0 fallback only):** do not use a labelled `Text_Input`
+  as a chat field without hiding `label_wrapper` (not just `label_text`).
+  After hide, the field should hug ~44px so the composer can hug the
+  visible control.
+- **Suggestion_list:** do not use the open/default expanded variant inline
+  in a 375 frame if it collides with the composer. Use a closed select or
+  keep `Ai Search`. Never let the menu eat the composer.
+- App bar and composer stay fully inside the device. Scroll height =
+  `composer.y - appBar.bottom`.
+
+Before done, run [visual-layout-qa.md](visual-layout-qa.md) on every
+device frame. If it is clipped or overflows the device, it is not done.
 
 ## Intelligence on this surface
 
@@ -247,10 +299,14 @@ do not invent legal chrome.
 
 - Query Figma on every task to relearn this pattern. Load this file first.
 - Treat one demo’s copy, tags, or illustration as the system.
-- Use `DsSearchbar` for the composer.
+- Use `DsSearchbar` or V.2.0 `Text_Input` for the composer when 3.0 `Ai Search` exists.
 - Rebuild tags as raw pills.
 - Paint hex on bubbles or the composer.
 - Flatten page, cards, bar, and composer to one surface.
 - Add a tab bar “to match other apps.”
 - Fabricate assistant answers, balances, or screens the brief does not
   specify.
+- Lock bubbles to a FIXED height that crops copy.
+- Leave `label_wrapper` reserved when a V.2.0 `Text_Input` chat field has no label.
+- Place an open `Suggestion_list` over the composer.
+- Call the screen done from a single hero screenshot.

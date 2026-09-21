@@ -96,6 +96,7 @@ const requiredBySkill = {
     "reference/components.md",
     "reference/ux-guardrails.md",
     "reference/experience-behaviours.md",
+    "reference/content-design.md",
   ],
   "subzero-coding-standards": [
     "reference/token-reference.md",
@@ -110,6 +111,7 @@ const requiredBySkill = {
     "reference/figma-gotchas.md",
     "reference/conversational-ui.md",
     "reference/ux-review.md",
+    "reference/visual-layout-qa.md",
   ],
 };
 

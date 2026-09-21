@@ -8,9 +8,10 @@ description: >-
   tokens, using Code Connect, replacing raw HTML/hex/px, or wiring the 5-file
   Redux API pattern. Also use for DS code review and common sx mistakes.
   For chat / assistant UI, also load conversational-ui.md. Load
-  subzero-principles first (including ux-guardrails and
-  experience-behaviours). Do not use to create or edit Figma files,
+  subzero-principles first (including ux-guardrails,
+  experience-behaviours, and content-design). Do not use to create or edit Figma files,
   generate Figma screens, or write PRDs — those use subzero-design-standards.
+  Cropped, overflowing, or clipped chrome in implemented UI is not done.
 argument-hint: "[component or file to review/generate]"
 license: Internal use
 ---
@@ -40,17 +41,18 @@ Before generating, editing, or reviewing any JSX/TSX code, agents must read:
 3. `../subzero-principles/reference/components.md`
 4. `../subzero-principles/reference/ux-guardrails.md`
 5. `../subzero-principles/reference/experience-behaviours.md`
-6. `SKILL.md` (this file)
-7. `reference/token-reference.md`
-8. `reference/common-mistakes.md`
-9. `reference/validation-checklist.md`
-10. `reference/api-integration-pattern.md` (required for API-connected UI changes)
-11. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
+6. `../subzero-principles/reference/content-design.md`
+7. `SKILL.md` (this file)
+8. `reference/token-reference.md`
+9. `reference/common-mistakes.md`
+10. `reference/validation-checklist.md`
+11. `reference/api-integration-pattern.md` (required for API-connected UI changes)
+12. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
 
-Do not proceed with code changes until items 1-9 are loaded. If the task
-includes API wiring, item 10 is also mandatory. Shared token/component language
+Do not proceed with code changes until items 1-10 are loaded. If the task
+includes API wiring, item 11 is also mandatory. Shared token/component language
 lives in `subzero-principles`; this skill owns `sx`, HTML→JSX mapping, and the
-Redux API pattern.
+Redux API pattern. User-facing strings follow `content-design.md`.
 
 ---
 
@@ -625,9 +627,10 @@ pattern or when `DsSearchbar` is unavailable and the substitution is recorded
 and approved. Do not choose `DsTextField` solely because its controlled API is
 simpler.
 
-An assistant composer is a different intent: use the library / Code Connect
-chat or AI input when one exists. Do not reuse `DsSearchbar` because it is
-nearby. See `../subzero-design-standards/reference/conversational-ui.md`.
+An assistant composer is a different intent: in Figma use 3.0 `Ai Search`;
+in code use the library / Code Connect chat or AI input when one exists.
+Do not reuse `DsSearchbar` because it is nearby. See
+`../subzero-design-standards/reference/conversational-ui.md`.
 
 ---
 
@@ -822,6 +825,27 @@ generated or edited code as final. The condensed version:
 - [ ] No manual `isLoading` `useState` when ServiceTracker is available
 - [ ] No legacy `--sz-*` tokens left unconverted (elevation may be a documented exception — confirm locally)
 
+**Visual layout QA (blocking — implemented UI).** Token/DS checks passing is
+not enough. If it is clipped or overflows the device, it is not done.
+
+- [ ] Message bubbles/cards do **not** use `overflow: 'hidden'` (or a FIXED
+      height shorter than the copy) unless the region is a designed scroller
+- [ ] Bubble/body text wraps: `minWidth: 0`, width `100%` / `flex: '1 0 0'`,
+      not a FIXED px width wider than the parent (375/390 content box)
+- [ ] Composer height hugs the visible field + send + padding; it is not
+      shorter than `DsTextField` (watch leftover label space when `label`
+      is empty/hidden)
+- [ ] Composer and bottom chrome fully paint inside the viewport — no
+      clipped send control, no sliver of the input
+- [ ] Open `DsSelect` / suggestion menus do not cover the composer
+- [ ] Consent rows, checkboxes, and long labels wrap inside the phone;
+      they do not overflow horizontally
+- [ ] Verify every screen in the set (not a single hero state): empty
+      thread, long bubble, composer focused, success/consent
+
+If any visual-layout check fails: STOP, fix, re-check. Do not call the
+screen done.
+
 **If something is unclear** — an API contract, where a reducer should live,
 which folder a hook belongs in — ask rather than assume. Don't guess and
 move forward silently.
@@ -845,11 +869,11 @@ subzero-coding-standards/
 ├── SKILL.md                              ← you are here (12 sections: mapping, tokens, sx rules, component prop APIs, architecture, layout, legacy migration, responsive design, API pattern, pre-code checklist, validation, common mistakes)
 └── reference/
     ├── token-reference.md                ← COMPLETE token list, all categories — check this before guessing any token name
-    ├── validation-checklist.md           ← full rule list + fix snippets
+    ├── validation-checklist.md           ← full rule list + fix snippets (includes visual layout QA)
     ├── common-mistakes.md                ← highest-frequency violations
     └── api-integration-pattern.md        ← 5-file Redux API template
 
 Shared (load from `../subzero-principles/reference/`): `ux-guardrails.md`,
-`experience-behaviours.md`.
+`experience-behaviours.md`, `content-design.md`.
 Chat screens also load `../subzero-design-standards/reference/conversational-ui.md`.
 ```

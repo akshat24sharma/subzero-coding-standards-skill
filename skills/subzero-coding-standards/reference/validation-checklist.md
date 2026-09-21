@@ -371,17 +371,104 @@ custom one — don't assume it's missing without checking.
 - [ ] No `useEffect` directly calling `fetch`/`axios` — API calls go through the project's established service/hook layer
 - [ ] Unused imports removed
 - [ ] No raw numeric-looking strings passed where a token reference was expected
-- [ ] Chat composer is not `DsSearchbar` unless that is the verified library mapping
+- [ ] Chat composer is not `DsSearchbar` or a generic text field when 3.0 `Ai Search` / the library AI input exists
 - [ ] Chat bubbles and composer accents use colour tokens — no hex
 - [ ] Loading / empty copy does not invent account or financial facts
 - [ ] Empty states explain missing + why + next step
 - [ ] Errors use problem + recovery, not “Something went wrong”
+- [ ] User-facing strings follow content-design.md (voice + tone for this
+      screen × new vs existing user)
 - [ ] Primary control names the outcome (not Submit / Proceed / Click here)
 - [ ] One primary action; secondaries use a quieter DS variant
 - [ ] Confirm matches consequence (money / irreversible / unexpected) — not every tap
 - [ ] Defaults do not pre-commit payees, amounts, consent, or investments
 - [ ] AI recommendation is not a silent execute; confirm before act
 - [ ] Irreversible or money-moving actions go through a confirm surface from the brief
+
+---
+
+## Tier 4 — Visual layout QA (crop / overflow / chrome)
+
+Blocking. Token-correct code can still be unusable if copy is cropped or
+chrome is clipped. If it is clipped or overflows the device, it is not done.
+
+### 22. Message bubble or card clips copy
+
+```tsx
+// ❌ — FIXED height + overflow hidden crops long assistant/user copy
+<DsBox sx={{ height: '24px', overflow: 'hidden' }}>
+  <DsTypography variant="bodyRegularMedium">{message}</DsTypography>
+</DsBox>
+
+// ✅ — hug height; wrap inside parent; overflow hidden only on designed scrollers
+<DsBox sx={{ width: '100%', maxWidth: '287px' }}>
+  <DsTypography variant="bodyRegularMedium">{message}</DsTypography>
+</DsBox>
+```
+
+### 23. Body / consent text wider than the parent (no wrap)
+
+```tsx
+// ❌ — measured unwrapped width (482px, 494–785px) overflows a 375 phone
+<DsTypography variant="bodyRegularMedium" sx={{ width: '482px' }}>
+  I agree to the terms
+</DsTypography>
+
+// ✅ — fill parent, wrap; minWidth 0 so flex items can shrink
+<DsBox sx={{ width: '100%', minWidth: 0 }}>
+  <DsTypography variant="bodyRegularMedium">{label}</DsTypography>
+</DsBox>
+```
+
+### 24. Composer shorter than the field / send clipped
+
+```tsx
+// ❌ — labelled DsTextField still reserves label space; composer shorter than the field
+<DsBox sx={{ position: 'fixed', bottom: 0, height: '24px', overflow: 'hidden' }}>
+  <DsTextField label="Message" value={v} onChange={onChange} fullWidth />
+</DsBox>
+
+// ✅ — chat field has no label slot; composer hugs field + send + padding; pins to bottom
+<DsBox
+  sx={{
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    display: 'flex',
+    alignItems: 'center',
+    px: 'var(--ds-spacing-bitterCold)',
+    py: 'var(--ds-spacing-glacial)',
+    gap: 'var(--ds-spacing-glacial)'
+  }}
+>
+  <DsTextField value={v} onChange={onChange} fullWidth placeholder="Ask…" />
+  <DsIconButton aria-label="Send">{/* send */}</DsIconButton>
+</DsBox>
+```
+
+Do not pass `label=""` and leave the label wrapper occupying ~24px. Omit
+the label (or use the library chat/AI input) so the field hugs ~44px.
+
+### 25. Open suggestion list covering the composer
+
+Do not render an expanded `DsSelect` / suggestion menu inline in a 375
+column if it collides with the pinned composer. Use a closed field;
+open the menu in a sheet or so it does not eat the composer.
+
+### Visual layout checklist (implemented UI)
+
+- [ ] No `overflow: 'hidden'` on bubbles/cards unless the region is a designed scroller
+- [ ] No FIXED height on a bubble/card shorter than the text
+- [ ] Wrapping body copy uses parent width (`width: '100%'`, `minWidth: 0`, `flex: '1 0 0'`) — not a px width wider than the viewport content box
+- [ ] Composer hugs visible field + send + padding; not shorter than `DsTextField`
+- [ ] Chat `DsTextField` does not reserve a hidden label slot
+- [ ] Composer and send fully paint inside the viewport (no clipped sliver)
+- [ ] Open dropdowns / `Suggestion_list` do not cover the composer
+- [ ] Consent checkboxes and long labels wrap inside the phone
+- [ ] Progress / primary actions are not clipped by the composer
+- [ ] Every screen in the set was checked (empty, long copy, focused composer, success) — not a single hero state
+- [ ] Fail / fix loop: if any item fails, STOP, fix, re-check; do not call done
 
 ---
 
@@ -404,6 +491,7 @@ grep -rn "direction='column'"    src/   # DsStack redundant direction
 grep -rn 'icon="ri-'             src/   # DsRemixIcon wrong prop (use className)
 grep -rn "<DsTag " src/ | grep -v "label=" # DsTag missing label prop
 grep -rn "gap={[0-9]"            src/   # DsStack numeric gap
+grep -rn "overflow:\s*'hidden'"  src/   # crop risk on bubbles/cards (review context)
 ```
 
 These are signals, not proof — review each hit in context before "fixing" it,

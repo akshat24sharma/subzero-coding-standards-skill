@@ -6,8 +6,27 @@ library or the wrong type (`Date_input` instead of `Text_Input`).
 
 ## Filter
 
-Keep only `libraryName: "Subzero V.2.0 Design System"`. Drop `null` and
-third-party libraries.
+Same intent, first match wins:
+
+1. `libraryName: "Subzero 3.0 Design System"`
+2. Only if 3.0 has no component for that **intent**:
+   `libraryName: "Subzero V.2.0 Design System"`
+3. Remix Icons — glyphs only
+
+Drop `null`, Material, community kits, and other libraries.
+
+3.0 is the published conversational library (one Components page). Source:
+
+https://www.figma.com/design/YBhe8vnUvSgR8KzbruzafR/Subzero-3.0-Design-System
+
+Optional: pass `includeLibraryKeys` from `get_libraries` / a prior search
+to scope `search_design_system`. Refresh keys if a known name returns empty.
+
+Do **not** paste per-component Figma node URLs. Search by name; import with
+the returned `componentKey`. Probe variants with `use_figma`.
+
+Variables (`$sz-*`) and text styles: search 3.0 first. If none publish,
+bind from V.2.0. Do not paint hex.
 
 ## Baseline searches (run in parallel)
 
@@ -15,7 +34,7 @@ third-party libraries.
 
 - Navigation: `"button"`, `"bottom_nav"`, `"bottom navigation"`, `"App_bar"`, `"header"`, `"nav"`, `"sidebar"`, `"tab bar"`
 - Content: `"card"`, `"input"`, `"search"`, `"chip"`, `"avatar"`, `"table"`, `"badge"`, `"tag"`, `"modal"`, `"drawer"`, `"accordion"`, `"list item"`, `"divider"`
-- Chat (when the brief is conversational): `"tag"`, `"bubble"`, `"composer"`, `"ask"`, `"AI"`, `"chat input"`, `"quick selection"`
+- Chat (when the brief is conversational): `"Ai Search"`, `"Chat bubble user"`, `"Chat bubble agent"`, `"Quick selection cards"`, `"Quick actions"`, `"Nudge"`, `"Thinking State"`, `"Header Logo"`, `"tag"`
 - Layout: `"container"`, `"section"`, `"banner"`, `"hero"`
 
 **Variables** (`includeVariables: true`), `$sz-` names:
@@ -54,10 +73,17 @@ not listed.
 | Checkbox | `checkbox_button` | `checkbox` | `multi select` |
 | Radio | `radio_button` | `radio` | `single select` |
 | Image | `avatar` | `image` | `thumbnail` |
-| Chat composer | (search library; names vary) | `chat input` | `ask` / `AI input` |
+| Chat composer | `Ai Search` | `chat input` | `ask` / `AI input` |
+| Chat composer field | `Ai Search Entry` | `chat field` | `composer input` |
 | Chat tag | `tag` | `chip` | `category` |
-| Chat prompt | (search) | `prompt card` | `quick selection` |
-| Chat bubble | (search) | `bubble` | `message` |
+| Chat prompt | `Quick selection cards` | `prompt card` | `quick selection` |
+| Chat quick action | `Quick actions` | `chip action` | `suggestion` |
+| Chat bubble (user) | `Chat bubble user` | `outgoing bubble` | `user message` |
+| Chat bubble (agent) | `Chat bubble agent` | `incoming bubble` | `assistant message` |
+| Chat nudge | `Nudge` / `Ai Nudge` | `banner` | `insight card` |
+| Chat thinking | `Thinking State` | `loading` | `pending steps` |
+| Chat header | `Header Logo` | `header` | `assistant bar` |
+| Chat time | `Message Time` | `timestamp` | `message time` |
 
 **Selection:** after all three searches, prefer the most complete
 pre-assembled SubZero component over assembling atoms. Example:
