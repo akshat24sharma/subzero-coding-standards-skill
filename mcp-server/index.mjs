@@ -72,7 +72,7 @@ function listReferences(name) {
   const refDir = join(skillDir(name), "reference");
   if (!existsSync(refDir) || !statSync(refDir).isDirectory()) return [];
   return readdirSync(refDir)
-    .filter((f) => f.endsWith(".md"))
+    .filter((f) => f.endsWith(".md") || f.endsWith(".json"))
     .sort();
 }
 
@@ -80,9 +80,9 @@ function loadSkillMarkdown(name) {
   return readFileSync(join(skillDir(name), "SKILL.md"), "utf8");
 }
 
-function loadReferenceMarkdown(name, file) {
+function loadReference(name, file) {
   const base = String(file).replace(/\\/g, "/").split("/").pop();
-  if (!base || !/^[A-Za-z0-9._-]+\.md$/.test(base)) {
+  if (!base || !/^[A-Za-z0-9._-]+\.(md|json)$/.test(base)) {
     throw new Error(`Invalid reference file: ${file}`);
   }
   const path = resolve(join(skillDir(name), "reference", base));
@@ -95,7 +95,8 @@ function loadReferenceMarkdown(name, file) {
       `Missing reference ${base} for ${name}. Available: ${listReferences(name).join(", ") || "(none)"}`
     );
   }
-  return { file: base, markdown: readFileSync(path, "utf8") };
+  const mimeType = base.endsWith(".json") ? "application/json" : "text/markdown";
+  return { file: base, markdown: readFileSync(path, "utf8"), mimeType };
 }
 
 function skillSummary(name) {
@@ -121,7 +122,7 @@ const TOOLS = [
   {
     name: "load_skill",
     description:
-      "Load one SubZero SKILL.md (unchanged). Use subzero-principles for tokens/components/ux-guardrails/experience-behaviours/content-design, subzero-coding-standards for React/JSX/sx/Redux, subzero-design-standards for Figma/PRD demos, conversational UI, and ux-review. Call before doing that work. Set include_references true to also attach every reference/*.md.",
+      "Load one SubZero SKILL.md (unchanged). Use subzero-principles for tokens/components/ux-guardrails/experience-behaviours/content-design, subzero-coding-standards for React/JSX/sx/Redux and presenter TEXT/{{id}} catalogs, subzero-design-standards for Figma/PRD demos, conversational UI, and ux-review. Call before doing that work. Set include_references true to also attach every reference/* file.",
     inputSchema: {
       type: "object",
       properties: {
@@ -132,7 +133,7 @@ const TOOLS = [
         },
         include_references: {
           type: "boolean",
-          description: "If true, append all reference/*.md files after SKILL.md",
+          description: "If true, append all reference files after SKILL.md",
         },
       },
       required: ["name"],
@@ -142,14 +143,14 @@ const TOOLS = [
   {
     name: "load_reference",
     description:
-      "Load one reference markdown file from a skill (for example token-reference.md or figma-tokens.md). Call after load_skill when that skill's load order names the file.",
+      "Load one reference file from a skill (markdown or json, for example token-reference.md, presenter-catalog.json, or figma-tokens.md). Call after load_skill when that skill's load order names the file.",
     inputSchema: {
       type: "object",
       properties: {
         skill: { type: "string", description: "Skill name that owns the file" },
         file: {
           type: "string",
-          description: "File name under skills/<skill>/reference/, e.g. tokens.md",
+          description: "File name under skills/<skill>/reference/, e.g. tokens.md or presenter-catalog.json",
         },
       },
       required: ["skill", "file"],
@@ -196,7 +197,7 @@ function formatSkill(name, includeReferences) {
   ];
   if (includeReferences) {
     for (const file of refs) {
-      const { markdown: refMd } = loadReferenceMarkdown(name, file);
+      const { markdown: refMd } = loadReference(name, file);
       parts.push("", `---`, "", `# Reference: ${file}`, "", refMd);
     }
   }
@@ -210,7 +211,7 @@ function callTool(name, args = {}) {
     case "load_skill":
       return toolText(formatSkill(args.name, Boolean(args.include_references)));
     case "load_reference": {
-      const { file, markdown } = loadReferenceMarkdown(args.skill, args.file);
+      const { file, markdown } = loadReference(args.skill, args.file);
       return toolText(`# Reference ${args.skill}/${file}\n\n${markdown}`);
     }
     case "load_skill_bundle":
@@ -238,7 +239,7 @@ function listResources() {
       resources.push({
         uri: `subzero://skill/${name}/reference/${file}`,
         name: `${name}/${file}`,
-        mimeType: "text/markdown",
+        mimeType: file.endsWith(".json") ? "application/json" : "text/markdown",
       });
     }
   }
@@ -269,11 +270,11 @@ function readResource(uri) {
       ],
     };
   }
-  const ref = uri.match(/^subzero:\/\/skill\/([a-z0-9-]+)\/reference\/([A-Za-z0-9._-]+\.md)$/);
+  const ref = uri.match(/^subzero:\/\/skill\/([a-z0-9-]+)\/reference\/([A-Za-z0-9._-]+\.(md|json))$/);
   if (ref) {
-    const { markdown } = loadReferenceMarkdown(ref[1], ref[2]);
+    const { markdown, mimeType } = loadReference(ref[1], ref[2]);
     return {
-      contents: [{ uri, mimeType: "text/markdown", text: markdown }],
+      contents: [{ uri, mimeType, text: markdown }],
     };
   }
   throw new Error(`Unknown resource: ${uri}`);
@@ -416,6 +417,13 @@ if (process.argv.includes("--self-test")) {
     const refs = listReferences(names[0]);
     if (refs[0]) callTool("load_reference", { skill: names[0], file: refs[0] });
     callTool("load_skill_bundle", { name: names[0] });
+    const catalogRef = callTool("load_reference", {
+      skill: "subzero-coding-standards",
+      file: "presenter-catalog.json",
+    });
+    const catalogText = catalogRef.content[0].text;
+    const jsonStart = catalogText.indexOf("{");
+    JSON.parse(catalogText.slice(jsonStart));
     process.stderr.write(`MCP self-test passed (${names.join(", ")}).\n`);
     process.exit(0);
   } catch (err) {

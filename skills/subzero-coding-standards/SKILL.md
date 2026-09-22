@@ -6,8 +6,10 @@ description: >-
   generating or fixing JSX/TSX, mapping HTML or Figma to Ds* components,
   styling with the sx prop, choosing --ds-spacing/--ds-colour/--ds-radius
   tokens, using Code Connect, replacing raw HTML/hex/px, or wiring the 5-file
-  Redux API pattern. Also use for DS code review and common sx mistakes.
-  For chat / assistant UI, also load conversational-ui.md. Load
+  Redux API pattern. Also use for presenter / ML / server-driven UI: TEXT
+  strings with {{component}} placeholders, responseBlock, configurable UI,
+  and presenter-catalog.json. Also use for DS code review and common sx
+  mistakes. For chat / assistant UI, also load conversational-ui.md. Load
   subzero-principles first (including ux-guardrails,
   experience-behaviours, and content-design). Do not use to create or edit Figma files,
   generate Figma screens, or write PRDs — those use subzero-design-standards.
@@ -48,9 +50,13 @@ Before generating, editing, or reviewing any JSX/TSX code, agents must read:
 10. `reference/validation-checklist.md`
 11. `reference/api-integration-pattern.md` (required for API-connected UI changes)
 12. `../subzero-design-standards/reference/conversational-ui.md` when the UI is chat / assistant
+13. `reference/presenter-dsl.md` and `reference/presenter-catalog.json` when
+    the task is a presenter layer, ML-chosen components, TEXT placeholders
+    (`{{id}}` / `PIE`), `responseBlock`, or configurable / server-driven UI
 
 Do not proceed with code changes until items 1-10 are loaded. If the task
-includes API wiring, item 11 is also mandatory. Shared token/component language
+includes API wiring, item 11 is also mandatory. If it includes presenter TEXT
+templates, item 13 is also mandatory. Shared token/component language
 lives in `subzero-principles`; this skill owns `sx`, HTML→JSX mapping, and the
 Redux API pattern. User-facing strings follow `content-design.md`.
 
@@ -791,6 +797,14 @@ If the project instead uses React Query, Formik, Zod, or another stack —
 adapt rather than forcing this pattern. See the techStackManifest table in
 `reference/api-integration-pattern.md`.
 
+### Presenter TEXT templates
+
+When the API (or ML presenter) sends a TEXT string with component keys,
+load `reference/presenter-dsl.md` and `reference/presenter-catalog.json`.
+Keep one TEXT string; replace `{{id}}` (or the product delimiter) with
+catalog `Ds*` embeds; render leftover copy as `DsTypography` as-is.
+Store the payload raw. Split/replace only in the UI transformer.
+
 ---
 
 ## 10. Before you start coding
@@ -871,7 +885,9 @@ subzero-coding-standards/
     ├── token-reference.md                ← COMPLETE token list, all categories — check this before guessing any token name
     ├── validation-checklist.md           ← full rule list + fix snippets (includes visual layout QA)
     ├── common-mistakes.md                ← highest-frequency violations
-    └── api-integration-pattern.md        ← 5-file Redux API template
+    ├── api-integration-pattern.md        ← 5-file Redux API template
+    ├── presenter-dsl.md                  ← TEXT string + {{id}} placeholders (load when asked)
+    └── presenter-catalog.json            ← Ds* / 3.0 cards: props, enums, copy fields
 
 Shared (load from `../subzero-principles/reference/`): `ux-guardrails.md`,
 `experience-behaviours.md`, `content-design.md`.

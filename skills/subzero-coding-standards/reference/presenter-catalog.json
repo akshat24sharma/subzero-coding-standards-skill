@@ -1,0 +1,588 @@
+{
+  "schemaVersion": "1.0",
+  "package": "@am92/react-design-system",
+  "wrapperType": "TEXT",
+  "placeholder": {
+    "delimiter": "{{id}}",
+    "note": "Product overlays may keep a bare-token delimiter; ids must still be catalog keys or embed instance keys."
+  },
+  "typographyVariants": [
+    "displayBoldLarge",
+    "displayBoldMedium",
+    "displayBoldSmall",
+    "displayBoldItalicLarge",
+    "displayBoldItalicMedium",
+    "displayBoldItalicSmall",
+    "headingBoldExtraLarge",
+    "headingBoldLarge",
+    "headingBoldMedium",
+    "headingBoldSmall",
+    "headingBoldExtraSmall",
+    "headingBoldItalicExtraLarge",
+    "headingBoldItalicLarge",
+    "headingBoldItalicMedium",
+    "headingBoldItalicSmall",
+    "headingBoldItalicExtraSmall",
+    "subheadingSemiboldLarge",
+    "subheadingSemiboldDefault",
+    "bodyRegularLarge",
+    "bodyRegularMedium",
+    "bodyRegularSmall",
+    "bodyBoldLarge",
+    "bodyBoldMedium",
+    "bodyBoldSmall",
+    "supportRegularInfo",
+    "supportRegularFootnote",
+    "supportRegularMetadata",
+    "supportBoldTextButton"
+  ],
+  "components": {
+    "DsBox": {
+      "figma": null,
+      "when": "Generic container / full-width shell. Not DsContainer for full-bleed.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsContainer": {
+      "figma": null,
+      "when": "Constrained / centered content (forms, cards). Never full-bleed chrome.",
+      "props": {
+        "maxWidth": { "kind": "string", "required": false }
+      },
+      "events": [],
+      "example": { "maxWidth": "lg" }
+    },
+    "DsStack": {
+      "figma": null,
+      "when": "Flex layout; several related fields. Omit direction when column (default).",
+      "props": {
+        "direction": {
+          "kind": "enum",
+          "values": ["row"],
+          "required": false,
+          "note": "Do not send column; that is the default."
+        }
+      },
+      "events": [],
+      "example": { "direction": "row" }
+    },
+    "DsTypography": {
+      "figma": null,
+      "when": "Headings and captions that are not the TEXT string itself. TEXT runs already render as DsTypography.",
+      "props": {
+        "variant": {
+          "kind": "enum",
+          "valuesRef": "typographyVariants",
+          "required": false
+        },
+        "children": { "kind": "string", "required": true, "copy": true }
+      },
+      "events": [],
+      "example": { "variant": "bodyRegularMedium", "children": "There was a brown crow." }
+    },
+    "DsButton": {
+      "figma": null,
+      "when": "Primary or secondary action. Not icon-only (use DsIconButton). Not a link.",
+      "props": {
+        "variant": {
+          "kind": "enum",
+          "values": ["contained", "outlined", "text"],
+          "required": false
+        },
+        "color": {
+          "kind": "enum",
+          "values": ["primary", "secondary", "warning"],
+          "required": false
+        },
+        "children": {
+          "kind": "string",
+          "required": true,
+          "copy": true,
+          "note": "Button text. There is no label prop."
+        }
+      },
+      "forbidden": ["label"],
+      "events": ["onClick"],
+      "example": { "variant": "contained", "color": "primary", "children": "Continue" }
+    },
+    "DsIconButton": {
+      "figma": null,
+      "when": "Icon-only button.",
+      "props": {},
+      "events": ["onClick"],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsTextField": {
+      "figma": "Text_Input",
+      "figmaLibrary": "Subzero V.2.0 Design System",
+      "when": "One typed string or number. Not search, date, OTP, phone, or password when a dedicated type exists.",
+      "controlled": true,
+      "props": {
+        "label": { "kind": "string", "required": true, "copy": true },
+        "helperText": { "kind": "string", "required": false, "copy": true },
+        "placeholder": { "kind": "string", "required": false, "copy": true },
+        "fullWidth": { "kind": "boolean", "required": false },
+        "success": { "kind": "boolean", "required": false },
+        "readOnly": { "kind": "boolean", "required": false },
+        "multiline": { "kind": "boolean", "required": false },
+        "defaultValue": { "kind": "string", "required": false, "note": "Prefill once. Live value stays on the client." }
+      },
+      "events": ["onChange", "onBlur"],
+      "payloadEvents": ["onBlur"],
+      "example": {
+        "label": "PAN Number",
+        "helperText": "10-character alphanumeric",
+        "fullWidth": true
+      }
+    },
+    "DsSearchbar": {
+      "figma": null,
+      "when": "Search control. Use before DsTextField. Not a chat composer.",
+      "controlled": true,
+      "props": {
+        "placeholder": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": { "placeholder": "Search" }
+    },
+    "DsSelect": {
+      "figma": "Suggestion_list",
+      "figmaLibrary": "Subzero V.2.0 Design System",
+      "when": "One choice from a list. Never option children.",
+      "controlled": true,
+      "props": {
+        "label": { "kind": "string", "required": true, "copy": true },
+        "options": {
+          "kind": "options",
+          "required": true,
+          "item": { "label": "string copy", "value": "string" }
+        }
+      },
+      "events": ["onChange"],
+      "example": {
+        "label": "Account type",
+        "options": [
+          { "label": "Savings", "value": "savings" },
+          { "label": "Current", "value": "current" }
+        ]
+      }
+    },
+    "DsCheckbox": {
+      "figma": null,
+      "when": "Binary check. Verify label prop on installed types.",
+      "controlled": true,
+      "props": {
+        "label": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": { "label": "I agree" }
+    },
+    "DsRadio": {
+      "figma": null,
+      "when": "One option inside DsRadioGroup.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsRadioGroup": {
+      "figma": null,
+      "when": "Single choice as radios. Provides value + onChange.",
+      "controlled": true,
+      "props": {},
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsRemixIcon": {
+      "figma": null,
+      "when": "Glyph. className is the icon; size with fontSize, never width/height.",
+      "props": {
+        "className": { "kind": "string", "required": true, "note": "ri-icon-name. There is no icon prop." }
+      },
+      "forbidden": ["icon"],
+      "events": [],
+      "example": { "className": "ri-check-line" }
+    },
+    "DsChip": {
+      "figma": null,
+      "when": "Filter chip / status pill. Not a homemade rounded DsBox.",
+      "props": {
+        "label": { "kind": "string", "required": true, "copy": true },
+        "type": { "kind": "enum", "values": ["nudge", "status"], "required": false },
+        "color": { "kind": "enum", "values": ["warning"], "required": false },
+        "outlined": { "kind": "boolean", "required": false }
+      },
+      "events": ["onClick"],
+      "example": { "label": "Low Stock", "type": "nudge", "color": "warning" }
+    },
+    "DsTag": {
+      "figma": "tag",
+      "figmaLibrary": "Subzero 3.0 Design System",
+      "when": "Category / chat filter tag. Both label and value required.",
+      "props": {
+        "label": { "kind": "string", "required": true, "copy": true },
+        "value": { "kind": "string", "required": true, "copy": true },
+        "selected": { "kind": "boolean", "required": false }
+      },
+      "events": ["onClick"],
+      "example": { "label": "Active", "value": "active" }
+    },
+    "DsProgressTracker": {
+      "figma": "Progress tracker_New",
+      "figmaLibrary": "Subzero V.2.0 Design System",
+      "when": "Stepper / wizard. Not a deprecated stepper.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsTable": {
+      "figma": null,
+      "when": "Tabular data. Never flex/grid rows pretending to be a table.",
+      "props": {
+        "columns": { "kind": "array", "required": false },
+        "rows": { "kind": "array", "required": false }
+      },
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {
+        "columns": [{ "id": "name", "label": "Name" }],
+        "rows": [{ "name": "Education" }]
+      }
+    },
+    "DsHeader": {
+      "figma": null,
+      "when": "Full-bleed top chrome.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsAppBar": {
+      "figma": "App_bar",
+      "figmaLibrary": "Subzero V.2.0 Design System",
+      "when": "Secondary bar with back / actions. Chat may prefer 3.0 Header Logo.",
+      "props": {
+        "color": { "kind": "enum", "values": ["default"], "required": false }
+      },
+      "events": [],
+      "propsSource": "installed-types",
+      "note": "navigation and actions are React nodes — do not send them as JSON; keep chrome in the page shell.",
+      "example": { "color": "default" }
+    },
+    "DsTooltip": {
+      "figma": null,
+      "when": "Tooltip. Not a title attribute.",
+      "props": {
+        "title": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": [],
+      "propsSource": "installed-types",
+      "example": { "title": "More information" }
+    },
+    "DsAccordion": {
+      "figma": null,
+      "when": "Collapsible section.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsSlider": {
+      "figma": null,
+      "when": "One continuous numeric value (amount, tenor). Not a multi-field form.",
+      "controlled": true,
+      "props": {
+        "min": { "kind": "number", "required": false },
+        "max": { "kind": "number", "required": false },
+        "step": { "kind": "number", "required": false },
+        "defaultValue": { "kind": "number", "required": false }
+      },
+      "events": ["onChange", "onChangeCommitted"],
+      "propsSource": "installed-types",
+      "example": { "min": 0, "max": 100000, "step": 1000, "defaultValue": 25000 }
+    },
+    "DsModal": {
+      "figma": null,
+      "when": "Modal overlay. Not a DsBox overlay.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsDialog": {
+      "figma": null,
+      "when": "Dialog.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsAutocomplete": {
+      "figma": null,
+      "when": "Autocomplete. Not a text field plus homemade list.",
+      "controlled": true,
+      "props": {
+        "label": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": { "label": "Payee" }
+    },
+    "DsDatePicker": {
+      "figma": "Date_input",
+      "figmaLibrary": "Subzero V.2.0 Design System",
+      "when": "Date. Not a text field.",
+      "controlled": true,
+      "props": {
+        "label": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": { "label": "Date of birth" }
+    },
+    "DsFileUploader": {
+      "figma": null,
+      "when": "File upload. Not a custom drop zone.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsPagination": {
+      "figma": null,
+      "when": "Page controls.",
+      "props": {},
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsTabs": {
+      "figma": null,
+      "when": "Tabs with DsTab. Not stacked buttons.",
+      "props": {},
+      "events": ["onChange"],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsTab": {
+      "figma": null,
+      "when": "One tab inside DsTabs.",
+      "props": {
+        "label": { "kind": "string", "required": true, "copy": true }
+      },
+      "events": [],
+      "propsSource": "installed-types",
+      "example": { "label": "Overview" }
+    },
+    "DsImage": {
+      "figma": null,
+      "when": "Image. Package uses srcSet={[{ src, alt }]}.",
+      "props": {
+        "srcSet": {
+          "kind": "array",
+          "required": true,
+          "item": { "src": "string", "alt": "string copy" }
+        }
+      },
+      "events": [],
+      "example": {
+        "srcSet": [{ "src": "https://example.com/chart.png", "alt": "Spending chart" }]
+      }
+    },
+    "DsDivider": {
+      "figma": null,
+      "when": "Horizontal rule. No props required in a TEXT placeholder.",
+      "props": {},
+      "events": [],
+      "example": {}
+    },
+    "DsLink": {
+      "figma": null,
+      "when": "In-app DS link.",
+      "props": {
+        "children": { "kind": "string", "required": true, "copy": true },
+        "href": { "kind": "string", "required": false }
+      },
+      "events": ["onClick"],
+      "example": { "children": "Learn more" }
+    },
+    "DsLoader": {
+      "figma": null,
+      "when": "Pending / thinking when 3.0 Thinking State has no code export.",
+      "props": {},
+      "events": [],
+      "example": {}
+    },
+    "DsLinearProgress": {
+      "figma": null,
+      "when": "Progress bar.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsNotistack": {
+      "figma": null,
+      "when": "Toast provider — app root, not a TEXT embed.",
+      "props": {},
+      "events": [],
+      "example": {}
+    },
+    "DsToast": {
+      "figma": null,
+      "when": "Toast content with DsNotistack. Prefer enqueueSnackbar in the ActionMap, not a TEXT token.",
+      "props": {},
+      "events": [],
+      "example": {}
+    },
+    "DsBottomSheet": {
+      "figma": null,
+      "when": "Mobile bottom sheet.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsDrawer": {
+      "figma": null,
+      "when": "Side panel.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsAvatar": {
+      "figma": null,
+      "when": "Avatar. ds-size enum. Not a circular DsBox.",
+      "props": {
+        "ds-size": {
+          "kind": "enum",
+          "values": ["XS", "S", "M", "L", "XL"],
+          "required": false
+        }
+      },
+      "events": [],
+      "example": { "ds-size": "M" }
+    },
+    "DsBadge": {
+      "figma": null,
+      "when": "Notification badge.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsFab": {
+      "figma": null,
+      "when": "Floating action button.",
+      "props": {},
+      "events": ["onClick"],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsMenu": {
+      "figma": null,
+      "when": "Popup menu with DsMenuItem. Not a custom dropdown.",
+      "props": {},
+      "events": [],
+      "propsSource": "installed-types",
+      "example": {}
+    },
+    "DsMenuItem": {
+      "figma": null,
+      "when": "One item inside DsMenu.",
+      "props": {
+        "children": { "kind": "string", "required": false, "copy": true }
+      },
+      "events": ["onClick"],
+      "propsSource": "installed-types",
+      "example": { "children": "Download" }
+    }
+  },
+  "unmappedFigmaIntents": {
+    "Header Logo": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "when": "Assistant header. Fallback DsAppBar if 3.0 has no header for the brief.",
+      "doNotEmitAsType": true
+    },
+    "Ai Search": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "when": "Chat composer. Not DsSearchbar or V.2.0 Text_Input.",
+      "doNotEmitAsType": true
+    },
+    "Chat bubble user": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "when": "User turn. Do not emit as a TEXT placeholder type.",
+      "doNotEmitAsType": true
+    },
+    "Chat bubble agent": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "when": "Agent turn. TEXT templates usually live inside this slot in the page, not as the bubble type.",
+      "doNotEmitAsType": true
+    },
+    "Message Time": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "doNotEmitAsType": true
+    },
+    "Quick selection cards": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "when": "Quick prompts. Do not homemade DsBox pills when this instance exists.",
+      "doNotEmitAsType": true
+    },
+    "Quick actions": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "doNotEmitAsType": true
+    },
+    "Nudge": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "doNotEmitAsType": true
+    },
+    "Ai Nudge": {
+      "library": "Subzero 3.0 Design System",
+      "code": null,
+      "doNotEmitAsType": true
+    },
+    "Thinking State": {
+      "library": "Subzero 3.0 Design System",
+      "code": "DsLoader",
+      "when": "Pending. Prefer 3.0 instance in Figma; DsLoader in code if no export.",
+      "doNotEmitAsType": true
+    }
+  },
+  "dsGap": {
+    "PIE": {
+      "when": "Category breakdown chart. No DsPie in the inventory.",
+      "props": {
+        "title": { "kind": "string", "required": true, "copy": true },
+        "labels": { "kind": "string[]", "required": true, "copy": true },
+        "values": { "kind": "number[]", "required": true }
+      },
+      "mapsTo": {
+        "title": "DsTypography",
+        "legend": "DsStack",
+        "chart": null
+      },
+      "note": "Keep the host chart inside DsBox. labels.length must equal values.length. Do not send hex palettes from ML.",
+      "example": {
+        "title": "Transaction breakdown by category",
+        "labels": ["Education", "Food"],
+        "values": [349994, 491398.1]
+      }
+    }
+  }
+}

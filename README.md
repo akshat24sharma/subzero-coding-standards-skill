@@ -1,13 +1,14 @@
 # subzero-coding-standards
 
-Agent Plugins 1.0 package for SubZero (`@am92/react-design-system`) standards.
-One plugin install, three skills:
+Agent Plugins 1.0 package for SubZero standards. One plugin install, three skills:
 
-| Skill | Who | Slash command |
-| ----- | --- | ------------- |
-| Shared DS language (tokens, component inventory, voice/tone) | Everyone | `/subzero-principles` |
-| React/TypeScript coding (`sx`, HTML→`Ds*`, Redux 5-file API) | Developers | `/subzero-coding-standards` |
-| SubZero Figma screens from a prompt or existing PRD | Designers and PMs | `/subzero-design-standards` |
+
+| Skill                                                                                 | Who               | Slash command               |
+| ------------------------------------------------------------------------------------- | ----------------- | --------------------------- |
+| Shared DS language (tokens, component inventory, voice/tone)                          | Everyone          | `/subzero-principles`       |
+| React/TypeScript coding (`sx`, HTML→`Ds*`, Redux 5-file API, presenter TEXT/`{{id}}`) | Developers        | `/subzero-coding-standards` |
+| SubZero Figma screens from a prompt or existing PRD                                   | Designers and PMs | `/subzero-design-standards` |
+
 
 Role skills load `subzero-principles` first so tokens and component names stay
 aligned. There is no separate product-manager skill: a PM who wants a demo
@@ -17,10 +18,10 @@ from a PRD uses `/subzero-design-standards`. This plugin does not write PRDs.
 
 - **Coding skill:** a target project with `@am92/react-design-system` installed.
 - **Design skill:** a Figma file with **Subzero 3.0 Design System**
-  (conversational) and **Subzero V.2.0 Design System** (everything 3.0
-  does not cover). MCP optional.
-  PMs use this same skill with an existing PRD to get a demo — they do not
-  need a separate skill.
+(conversational) and **Subzero V.2.0 Design System** (everything 3.0
+does not cover). MCP optional.
+PMs use this same skill with an existing PRD to get a demo — they do not
+need a separate skill.
 - VS Code / Cursor with plugins enabled (`chat.plugins.enabled` is `true` by default).
 
 Skills stay the source of truth. A thin MCP server in `mcp-server/` exposes
@@ -47,15 +48,17 @@ Same standards, served over MCP stdio. No `npm install`. Requires Node.js.
 Stdout is one JSON-RPC object per line (what Cursor expects). To use
 LSP `Content-Length` framing instead, set `MCP_STDIO_FRAMING=lsp`.
 
-| Tool | Purpose |
-| ---- | ------- |
-| `list_skills` | Catalog + descriptions + reference file names |
-| `load_skill` | One `SKILL.md` (`include_references` optional) |
-| `load_reference` | One `reference/*.md` file |
-| `load_skill_bundle` | Skill + every reference in one call |
+
+| Tool                | Purpose                                         |
+| ------------------- | ----------------------------------------------- |
+| `list_skills`       | Catalog + descriptions + reference file names   |
+| `load_skill`        | One `SKILL.md` (`include_references` optional)  |
+| `load_reference`    | One `reference/*.md` or `reference/*.json` file |
+| `load_skill_bundle` | Skill + every reference in one call             |
+
 
 Resources: `subzero://skills`, `subzero://skill/<name>`,
-`subzero://skill/<name>/reference/<file>.md`.
+`subzero://skill/<name>/reference/<file>.md` (or `.json`).
 
 Prompts: `apply-subzero-principles`, `apply-subzero-coding-standards`,
 `apply-subzero-design-standards`.
@@ -116,6 +119,8 @@ skills/
       common-mistakes.md
       validation-checklist.md
       api-integration-pattern.md
+      presenter-dsl.md
+      presenter-catalog.json
   subzero-design-standards/
     SKILL.md
     reference/
@@ -129,6 +134,8 @@ skills/
 scripts/
   validate-plugin.mjs
 ```
+
+
 
 ## Local testing
 
@@ -151,13 +158,17 @@ Reload, then confirm these skills are listed and enabled:
 - `subzero-coding-standards`
 - `subzero-design-standards`
 
+
+
 ## Installing from a Git source
 
 1. Run **Chat: Install Plugin From Source** from the Command Palette.
 2. Enter this repository's Git URL, e.g.
-   `https://github.com/akshat24sharma/subzero-coding-standards-skill.git`.
+  `https://github.com/akshat24sharma/subzero-coding-standards-skill.git`.
 3. VS Code clones and installs the plugin; verify it under
-   **Extensions → Agent Plugins - Installed**.
+  **Extensions → Agent Plugins - Installed**.
+
+
 
 ## Distribution via an internal marketplace
 
@@ -184,10 +195,12 @@ For every release:
 
 1. Bump `version` in [plugin.json](plugin.json) (Semantic Versioning).
 2. Update the corresponding plugin entry's `version` in the marketplace
-   repository's `marketplace.json` (if distributed via marketplace).
+  repository's `marketplace.json` (if distributed via marketplace).
 3. Commit and push. Consumers pick up the update the next time VS Code
-   checks for extension updates (**Extensions: Check for Extension
+  checks for extension updates (**Extensions: Check for Extension
    Updates**, or automatically every 24 hours).
+
+
 
 ## Validation
 
@@ -201,30 +214,35 @@ node scripts/validate-plugin.mjs
 It checks that:
 
 - `plugin.json` exists, declares the Agent Plugins 1.0 `$schema`, and has a
-  valid lowercase kebab-case `name` and a `version`.
+valid lowercase kebab-case `name` and a `version`.
 - Each folder under `skills/` matches the plain kebab-case `name` field in
-  its `SKILL.md` YAML frontmatter.
+its `SKILL.md` YAML frontmatter.
 - Required `reference/` files for every skill are present.
 - If `mcp.json` exists, it is valid and `mcp-server/index.mjs` is present.
+
+
 
 ## Troubleshooting: skill does not appear
 
 - Confirm `chat.plugins.enabled` is `true`.
 - Run `node scripts/validate-plugin.mjs` and fix any reported errors.
 - Confirm each `skills/<name>/SKILL.md` frontmatter `name` is plain kebab-case
-  and matches the folder name (no namespace prefix).
+and matches the folder name (no namespace prefix).
 - Confirm `plugin.json` is at the repository root and its `$schema` is
-  exactly `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json`.
+exactly `https://agent-plugins.org/schemas/1.0.0/plugin.schema.json`.
 - If installed from source and stuck, remove the cached clone and reinstall:
   - macOS: `~/Library/Application Support/Code/agentPlugins/github.com/{org}/{repo}`
   - Linux: `~/.config/Code/agentPlugins/github.com/{org}/{repo}`
   - Windows: `%APPDATA%\Code\agentPlugins\github.com\{org}\{repo}`
 
+
+
 ## Placeholders to replace before publishing
 
 - `author.name` in [plugin.json](plugin.json) is set to a generic
-  `"SubZero Team"` placeholder — replace with a real author/team name if
-  desired.
+`"SubZero Team"` placeholder — replace with a real author/team name if
+desired.
 - The internal marketplace name/URL in this README is illustrative
-  (`your-org/internal-plugin-marketplace`) — replace with your actual
-  marketplace repository once one exists.
+(`your-org/internal-plugin-marketplace`) — replace with your actual
+marketplace repository once one exists.
+

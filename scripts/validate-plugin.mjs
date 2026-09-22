@@ -103,6 +103,8 @@ const requiredBySkill = {
     "reference/common-mistakes.md",
     "reference/validation-checklist.md",
     "reference/api-integration-pattern.md",
+    "reference/presenter-dsl.md",
+    "reference/presenter-catalog.json",
   ],
   "subzero-design-standards": [
     "reference/figma-tokens.md",

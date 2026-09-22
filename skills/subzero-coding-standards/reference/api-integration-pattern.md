@@ -274,6 +274,17 @@ useEffect(() => {
 }, [])
 ```
 
+## Presenter TEXT responses
+
+When the payload is a TEXT template (component keys inside a string, with
+optional `embeds`), still store the **raw** body in the reducer. Do not
+split placeholders in the service file.
+
+The page transformer maps `{{id}}` → catalog components and leftover
+substrings → `DsTypography`. See `presenter-dsl.md` and
+`presenter-catalog.json`. Do not assume a JSON path such as
+`data.response.responseBlock` unless the target product already uses it.
+
 ## Adapting to a different stack
 
 This 5-file pattern assumes Redux + `@am92/web-http`. If the project uses
